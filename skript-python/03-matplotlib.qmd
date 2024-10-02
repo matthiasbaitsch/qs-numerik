@@ -1,0 +1,76 @@
+---
+title: Plots mit Matplotlib
+jupyter: python3
+---
+
+
+Mit dem Python-Paket [matplotlib](https://matplotlib.org) lassen sich eine Vielzahl verschiedener Plots erstellen, 
+[hier](https://matplotlib.org/stable/tutorials/introductory/sample_plots.html#sphx-glr-tutorials-introductory-sample-plots-py) eine Sammlung von Beispielen. 
+
+Wie immer muss die Bibliothek importiert werden. Für uns interessant ist das Paket `matplotlib.pyplot`, als Kürzel hat sich dafür `plt` eingebürgert. Besonders gut funktioniert matplotlib zusammen mit den Paketen NumPy und math, die wir gleich mit importieren.
+
+
+```{python}
+from math import *
+import numpy as np
+import matplotlib.pyplot as plt
+```
+
+## Linienplots
+
+Linienplots erstellt man mit der Funktion `plot`, im einfachsten Fall werden zwei Listen oder NumPy-Arrays übergeben, in denen
+$x$-Koordinaten und $y$-Koordinaten stehen. Die `plot`-Funktion verbindet diese Punkte, so dass ein Polygonzug entsteht. 
+
+```{python}
+plt.plot([0, 3, 3, 2, 1], [0, 0, 2, 2, 1])
+```
+
+Um **Funktionen** zu **plotten** geht man genau so vor, allerdings verwendet man dann so viele Punkte, dass sich der
+Plot für das Auge wie eine glatte Kurve darstellt. Die textuelle Ausgabe des Plotobjekts (siehe oben) können 
+wir mit einem Semikolon unterdrücken.
+
+```{python}
+x = np.linspace(0, 2 * pi, 100)
+y = np.sin(x)
+plt.plot(x, y);
+```
+
+**Mehrere Funktionen** lassen sich plotten, indem die `plot` - Funktion mehrfach hintereinander aufgerufen wird. 
+Hier die Sinusfunktion, die Kosinusfunktion und die Nullfunktion in einem Plot.
+
+```{python}
+x = np.linspace(-pi, 6 * pi, 100)
+y1 = np.sin(x)
+y2 = np.cos(x)
+plt.plot(x, y1)
+plt.plot(x, y2)
+plt.plot([x.min(), x.max()], [0, 0]);
+```
+
+Eine zweite Möglichkeit mehrere Graphen zu erstellen besteht darin, eine Liste mit $x$-Werten und eine Matrix zu übergeben. Dabei stehen in jeder Spalte
+der Matrix die jeweiligen Funktionswerte. Die Anzahl der Zeilen der Matrix muss dabei gleich der Anzahl der $x$-Werte sein, die
+Anzahl der Spalten ist die Anzahl der zu plottenden Funktionen.
+
+```{python}
+plt.plot(x, np.array([y1, y2]).T);
+```
+
+### Plots beschriften
+
+Es gibt eine Reihe von Funktionen um Plots zu beschriften und die Art der Darstellung zu beeinflussen. 
+Die wichtigsten hier in einem Beispiel, eine ausführlichere Beschreibung gibt es im 
+[offiziellen Tutorial](https://matplotlib.org/stable/tutorials/introductory/pyplot.html#sphx-glr-tutorials-introductory-pyplot-py)
+oder [hier](https://www.python-kurs.eu/matplotlib.php) in deutscher Sprache.
+.
+
+```{python}
+plt.plot(x, np.array([y1, y2]).T)
+plt.legend(['sin(x)', 'cos(x)'])
+plt.title('Trigonometrische Funktionen')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.grid(True)
+```
+
+Wird bei Bedarf noch ergänzt.
+

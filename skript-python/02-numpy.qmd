@@ -1,0 +1,327 @@
+---
+title: Matrizen und Vektoren mit NumPy
+jupyter: python3
+---
+
+
+In numerischen Anwendungen sind Matrizen und Vektoren allgegenwärtig. In Python gibt es die Bibliothek NumPy, 
+die mit [`ndarray`](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html)
+einen entsprechenden Datentyp und zugehörige Rechenoperationen zur Verfügung stellt.
+
+Wie immer in Python müssen wir die Bibliothek zunächst importieren. Es sich eingebürgert, dass Funktionen aus NumPy über das
+Kürzel `np` aufgerufen werden, wir werden uns (etwas widerwillig) an diese Konvention halten. Daher beginnt ein Jupyter Notebook 
+oder eine Python - Datei, in denen NumPy verwendet werden soll, immer mit der Anweisung
+
+
+```{python}
+import numpy as np
+```
+
+## Grundlagen
+
+In NumPy sind Vektoren und Matrizen Spezialfälle von $n$-dimensionalen Arrays (daher der Name `ndarray`), für einen Vektor gilt $n = 1$ und für eine Matrix $n = 2$.
+Uns wird das in der Regel ausreichen, aber prinzipiell kann man auch mit fünfdimensionalen Arrays rechnen.
+
+### Erzeugen
+
+Eine erste Möglichkeit Vektoren und Matrizen zu erzeugen besteht darin, die `array` - Funktion zu verwenden und die **Einträge direkt anzugeben**:
+
+```{python}
+x = np.array([5, 1, 9, 2])
+y = np.array([1, 2, 1, 3])
+A = np.array([[1, 2, 3, 4], [7, 6, 5, 4], [6, 4, 6, 4]])
+B = np.array([[2, 1], [5, 6], [9, 1]])
+
+print('x =', x)
+print('y =', y)
+print('A =', A)
+print('B =', B)
+```
+
+Der Inhalt der Arrays (dieses Wort verwenden wir als Oberbegriff) wird also in Listen angegeben, wobei für eine Matrix eine Liste von Listen verwendet wird.
+
+Weiterhin gibt es Funktionen, mit denen sich **spezielle Matrizen und Vektoren** anlegen lassen.
+
+```{python}
+print('Nullvektor:', np.zeros(3))
+print('Nullmatrix:', np.zeros([2, 3]))
+print('Einsmatrix:', np.ones([4, 2]))
+print('Einheitsmatrix:', np.eye(4))
+```
+
+Besonders praktisch ist die Funktion `np.linspace`, die ein Intervall von $a$ bis $b$ in $n - 1$ gleichlange Abschnitte unterteilt.
+
+```{python}
+z = np.linspace(1.1, 2.1, 11)
+print('z=', z)
+```
+
+### Eigenschaften von Arrays
+
+Ein `ndarray` - Objekt besitzt die Eigenschaft `shape`, in der die Dimensionen abgelegt sind. Hier für einen Vektor
+
+```{python}
+print('Anzahl der Element in z:', z.shape[0])
+```
+
+und eine Matrix
+
+```{python}
+print('Die Matrix A hat', A.shape[0], 'Zeilen und', A.shape[1], 'Spalten')
+```
+
+### Auf Einträge zugreifen
+
+Um auf die Einträge von Arrays zuzugreifen verwendet man (wie auch bei Python-Listen) eckige Klammern `[]`, die Indizierung
+beginnt bei 0. Bei Matrizen werden Zeilen- und Spaltenindex durch ein Komma getrennt.
+
+```{python}
+A[1, 2] = 999
+print('A =', A)
+print('x[0] =', x[0])
+```
+
+Mit negativen Indizes wird vom Ende des Arrays gezählt. Dabei erhält man mit dem Index -1 das letzte Element, mit -2 das vorletzte und so weiter.
+
+```{python}
+u = np.linspace(0, 1, 11)
+
+print('     u = ', u)
+print(' u[-1] = ', u[-1])
+print(' u[-2] = ', u[-2])
+print('u[-11] = ', u[-11])
+```
+
+Häufig möchte man in einem Rechenschritt auf mehrere Einträge eines Arrays gleichzeitig zugreifen. Hierfür gibt es zwei Möglichkeiten:
+
+- Den Doppelpunkt-Operator
+- Die Indizierung mithilfe von Integer-Arrays 
+
+Vollständig erklärt ist das in der [NumPy-Dokumentation](https://numpy.org/doc/stable/reference/arrays.indexing.html), leider ist die
+Erläuterung sehr technisch und schwer zugänglich. Im Folgenden sind daher die wichtigsten Punkte zusammengefasst.
+
+#### Doppelpunkt-Operator
+
+Mit der Schreibweise `start:stop` wird ein Bereich von Indizes angegeben. Dabei ist der `stop`-Index nicht enthalten (so wie bei der `range` - Funktion). Mit
+
+```{python}
+print(z[2:5])
+```
+
+erhalten wir also die Einträge an den Positionen $2, 3, 4$. Zusätzlich kann man mit `start:stop:inc` noch ein Inkrement angeben, 
+zum Beispiel bekommen wir mit
+
+```{python}
+print(z[2:7:3])
+```
+
+den dritten und den sechsten Eintrag. Lässt man hingegen `start` und/oder `stop` weg, dann erhält man den gesamten Bereich vom Anfang oder bis zum Ende. 
+Damit wird es zum Beispiel möglich, auf Zeilen oder Spalten einer Matrix zuzugreifen.
+
+```{python}
+print(z[3:])
+print(A[1, :])
+print(B[:, 0])
+```
+
+Die Adressierung mit dem Doppelpunkt funktioniert auch bei Zuweisungen. Hier ein Beispiel:
+
+```{python}
+A[0:2, 1:3] = np.array([[44, 88], [22, 99]])
+B[1:, 1] = 777
+print('A =', A)
+print('B =', B)
+```
+
+Es kann rechts vom Gleichheitszeichen also sowohl ein Array (dann müssen die Dimensionen passen) als auch eine einzelne Zahl stehen.
+
+#### Index-Arrays
+
+Mithilfe von Index-Arrays lassen sich nicht-fortlaufende Bereiche adressieren, zum Beispiel liefert das Index-Array `[2, 4, 5]` in
+
+```{python}
+print(z[[2,4,5]])
+```
+
+den dritten, fünften und sechsten Eintrag des Arrays `z`. 
+
+Anmerkung: Streng genommen ist `[2, 4, 5]` eine Python-Liste, aber da sind wir (und der Python-Interpreter) großzügig.
+
+Index-Arrays funktionieren auch bei Matrizen, leider muss man hier jedoch die Index-Arrays mit `np.ix_` einpacken:
+
+```{python}
+A = np.ones([3, 5])
+print(' Vorher: A =', A)
+A[np.ix_([0, 2], [1, 3])] = [[111, 999], [444, 777]]
+print('Nachher: A =', A)
+```
+
+Es gibt noch die Möglichkeit, Boolsche-Arrays zur Indizierung zu verwenden, das werden wir aber vorraussichtlich nicht benötigen.
+
+## Rechnen mit Matrizen und Vektoren
+
+Mit NumPy ist es möglich, Rechnungen mit Matrizen und Vektoren sehr kompakt und fast wie auf dem Papier aufzuschreiben. Allerdings muss man
+bei der Bedeutung der Operatoren aufpassen.
+
+### Mathematische Operatoren und Funktionen
+
+Die mathematischen Operatoren sind elementweise vereinbart. Hier am Beispiel von Vektoren
+
+```{python}
+print('x =', x, ', y =', y)
+print('x + y =', x + y)
+print('x * y =', x * y)
+print('y / 4 =', y / 4)
+```
+
+und Matrizen
+
+```{python}
+A = np.array([[3, 1],[8, 2],[2, 9]])
+B = np.array([[7, 8],[3, 2],[5, 6]])
+print('A + B =', A + B)
+print('A * B =', A * B)
+```
+
+Darüber hinaus definiert NumPy die üblichen mathetischen Funktionen für Arrays. Ein Ausdruck wie zum Beispiel
+
+$$
+    1 - sin(x) + x^2
+$$
+
+kann damit in einem Rutsch für eine Liste von Zahlen berechnet werden:
+
+```{python}
+y = 1 - np.sin(x) + x**2
+print('y =', y)
+```
+
+### Lineare Algebra
+
+Das **Skalarprodukt** von Vektoren lässt sich entweder mit der Funktion `dot` berechnen oder der Methode `dot` aus der `ndarray` Klasse.
+
+```{python}
+print('x.y =', np.dot(x, y))
+print('x.y =', x.dot(y))
+```
+
+Für Vektoren mit zwei oder drei Komponenten wird das **Kreuzprodukt** mit der Funktion `cross` berechnet. Für Vektoren mit zwei Komponenten
+ist das Ergebnis eine Zahl (die dritte Komponente des Ergebnisvektors), sonst wieder ein Vektor mit zwei Komponenten. 
+
+```{python}
+u = np.array([3, 2, 1])
+v = np.array([5, -1, 4])
+w = np.cross(u, v)
+
+print('u =', u)
+print('v =', v)
+print('w = u x v =', w)
+print('Natürlich gilt: u.w =', u.dot(w), ', v.w =', v.dot(w))
+```
+
+Sollen **Produkte** von **Matrizen und Matrizen** oder **Matrizen und Vektoren** berechnet werden, dann verwendet man den `@` - Operator. 
+Natürlich müssen dann wieder die Dimensionen der Operanden zusammenpassen.
+
+```{python}
+A = np.array([[6, 1, 9, 1], [3, 4, 1, 10]])
+B = np.array([[1, 2, 3, 4], [5, 4, 3, 2], [1, 3, 1, 5], [5, 3, 1, 8]])
+x = np.array([1, 3, 2, 8])
+
+print('A =', A)
+print('B =', B)
+print('x = ', x)
+print('AB =', A @ B)
+print('Ax =', A @ x)
+print('Bx =', B @ x)
+```
+
+Die Transponierte einer Matrix `A` erhält man mit `A.T`, damit kann man dann auch wie gewohnt rechnen.
+
+```{python}
+print('A =', A)
+print('A^T =', A.T)
+print('A^TA =', A.T @ A)
+```
+
+Zur Lösung linearer Gleichungssysteme gibt es die Funktion `solve` aus dem `linalg` - Paket von NumPy.
+
+```{python}
+A = np.array([[5, 2], [6, 1]])
+b = np.array([5, 2])
+x = np.linalg.solve(A, b)
+
+print('Lösung x =', x)
+print('Zur Kontrolle: ', A @ x - b)
+```
+
+### Exotische Operationen
+
+Ausführliche Erklärung hier:
+
+    https://numpy.org/doc/stable/user/basics.broadcasting.html
+
+#### Zeilen einer Matrix multiplizieren
+
+Sollen die Zeilen einer Matrix mit den Einträgen eines Vektors multipliziert werden, wie zum Beispiel
+
+$$
+\begin{pmatrix}
+    2 \\ 3 \\ 4
+\end{pmatrix}
+\begin{pmatrix}
+    1 & 2 & 3 \\ 4 & 5 & 6 \\ 7 & 8 & 9
+\end{pmatrix}
+\rightarrow
+\begin{pmatrix}
+    2 & 4 & 6 \\ 12 & 15 & 18 \\ 28 & 32 & 36
+\end{pmatrix}
+$$
+
+dann kann man den `*`-Operator verwenden, muss aber bei dem Vektor noch eine Achse hinzufügen.
+
+```{python}
+c = np.arange(2, 5)
+A = np.arange(1, 10).reshape([3, 3])
+print('c[:, None].shape =', c[:, None].shape)
+print('A.shape =', A.shape)
+print('c * A =', c[:, None] * A)
+```
+
+Warum funktioniert das? Weil die letzte Dimension 1 von `c[:, None]` auf die letzte Dimension 3 von `A` verteilt wird (__broadcasting__).
+
+#### Vektor von Zeilen einer Matrix addieren/subtrahieren
+
+Um einen Vektor zu allen Zeilen einer Matrix zu addieren/subtrahieren, wie in
+
+$$
+\begin{pmatrix}
+    2 & 3 & 4
+\end{pmatrix}
++
+\begin{pmatrix}
+    1 & 2 & 3 \\ 4 & 5 & 6 \\ 7 & 8 & 9
+\end{pmatrix}
+\rightarrow
+\begin{pmatrix}
+    3 & 5 & 7 \\ 6 & 8 & 10 \\ 9 & 11 & 13
+\end{pmatrix},
+$$
+
+verwendet man einfach den entsprechenden Operator.
+
+```{python}
+c = np.arange(2, 5)
+A = np.arange(1, 10).reshape([3, 3])
+print('c.shape =', c.shape)
+print('A.shape =', A.shape)
+print('c + A =', c + A)
+```
+
+Hier passt die letzte Dimension und die erste wird aufgefüllt. Man hätte die fehlende Achse auch explizit einsetzen können:
+
+```{python}
+print('c[None, :].shape =', c[None, :].shape)
+print('A.shape =', A.shape)
+print('c + A =', c[None, :] + A)
+```
+

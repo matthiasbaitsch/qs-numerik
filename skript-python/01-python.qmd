@@ -1,0 +1,403 @@
+---
+title: Jupyter Notebooks und Python
+jupyter: python3
+---
+
+
+## Jupyter Notebooks
+
+Ein Jupyter Notebook ist ein Dokument, das sowohl Text als auch Programmcode enthalten kann. 
+In einer geeigneten Umgebung (z.B. browserbasiert in 
+[JupyterLab](https://mybinder.org/v2/gh/jupyterlab/jupyterlab-demo/master?urlpath=lab/tree/demo) 
+oder einer Entwicklungsumgebung wie
+[Visual Studio Code](https://code.visualstudio.com/docs/datascience/jupyter-notebooks)
+) 
+können damit interaktive Dokumente erstellt werden, die sich in verschiedene Formate exportieren lassen (HTML, PDF, LaTeX und Folien für Präsentationen).
+
+Ein Jupyter Notebook besteht aus Zellen die entweder
+
+- Text in [Markdown-Schreibweise](https://www.ibm.com/docs/en/db2-event-store/2.0.0?topic=notebooks-markdown-jupyter-cheatsheet) oder
+- Programmcode (bei uns Python)
+
+enthalten können. Textzellen lassen sich mit einem Doppelklick bearbeiten, mit `Shift + Enter` schließen Sie die Bearbeitung ab.
+
+
+## Variablen, Operatoren und mathematische Funktionen
+
+Variablen enthalten Werte, im Beispiel unten eine Zeichenkette, eine Fließkommazahl und eine ganze Zahl. Die Ausgabe erfolgt mit der `print` - Funktion.
+
+```{python}
+a = "Hallo"
+x = 3.1
+y = 42
+print(a, x, y)
+```
+
+Für numerische Argumente haben die Operatoren `+`, `-`, `*`, `/` die üblichen Bedeutungen. Zusätzlich gibt es 
+
+- `%` - Rest einer Division
+- `//` - Division mit Runden nach unten
+- `**` - Potenz
+
+```{python}
+print(7 % 3)
+print(7 // 3)
+print(7 ** 3)
+```
+
+Um die gängigen mathematischen Funktionen wie `sqrt`, `pow`, `sin`, `cos`, ... verwenden zu können, muss zunächst die `math`-Bibliothek importiert werden. 
+Dann stehen auch die mathematischen Konstanten $\pi$ und $e$ zur Verfügung.
+
+```{python}
+from math import *
+
+print(sqrt(4))
+print(pi)
+print(e)
+```
+
+### Beispiel
+
+Die quadratische Gleichung $ax^2 + bx + c = 0$ besitzt die Lösungen
+
+$$
+    x_{1,2} = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
+$$
+
+die hier in Python berechnet werden:
+
+```{python}
+a =  1
+b = -2
+c = -3
+x1 = (-b - sqrt(b**2 - 4 * a * c)) / (2 * a)
+x2 = (-b + sqrt(b**2 - 4 * a * c)) / (2 * a)
+print('Lösungen: x1 =', x1, 'und x2 =', x2)
+```
+
+## Listen
+
+Eine Liste in Python kann man sich als eine Sequenz von Kästchen vorstellen. Jedes Kästchen kann beliebige Python-Objekte enthalten, die beim Erzeugen der Liste
+in eckige Klammern geschrieben und durch Kommata getrennt werden.
+
+```{python}
+l = [pi, 'Hallo!', 2021]
+print('Liste l =', l)
+```
+
+Der Zugriff auf den Inhalt der Kästchen erfolgt mit einem Index, wobei das erste Kästchen den Index `0` hat. Die Länge einer Liste erhält man
+mit der Funktion `len`.
+
+```{python}
+print('Inhalt der Liste l im Kästchen mit der Nummer 1:', l[1])
+l[1] = 'Auf Wiedersehen!'
+print('Geänderte Liste:', l)
+print('Anzahl der Kästchen in l:', len(l))
+```
+
+Listen können auch Schritt für Schritt erzeugt werden. Es ist zum Beispiel möglich, mit einer leeren Liste zu beginnen und Kästchen anzuhängen.
+
+```{python}
+h = []
+h.append('Bonjour!')
+h.append(1789)
+h.append(e)
+print('Liste h=', h)
+```
+
+Es gibt vielfältige Möglichkeiten mit Listen zu Arbeiten, im Zweifelsfall hilft ein Blick in die 
+[offizielle Dokumentation](https://docs.python.org/3/tutorial/datastructures.html). Hier ein paar Beispiele
+
+```{python}
+print(2 * l)
+print(l + h)
+print(h.index(e))
+```
+
+Wir halten fest:
+
+- Die Multiplikation einer Liste mit einer ganzen Zahl bewirkt, dass die Liste mehrfach hintereinander kopiert wird
+- Mit dem `+` - Operator können mehrere Listen zu einer neuen Liste verbunden werden
+- Mit der Methode `index` kann nach der Position eines Elements in der Liste gesucht werden. Ist das gesuchte Element mehrfach vertreten, wird die erste Position zurück gegeben, ist das Element nicht in der Liste enthalten bricht das Programm mit einer Fehlermeldung ab
+
+### Ranges
+
+Ein nützliches Objekt, das sich ähnlich wie eine Liste verhält (aber keine ist), wird mit `range` erzeugt. Mit den ganzen Zahlen `a` und `b`
+liefert `range(a, b)` die Sequenz
+
+$$
+    a, a + 1, \dots, b - 1,
+$$
+
+die obere Grenze `b` ist also nicht enthalten.
+
+```{python}
+r = range(2, 7)
+print(r)
+print('Anzahl Elemente: ', len(r))
+print('r[0] =', r[0], 'r[1] = ', r[1], '... , r[4] = ', r[4] )
+```
+
+## Kontrollstrukturen
+
+### Verzweigungen mit if, elif und else
+
+In einer **bedingten Anweisung** wird Programmcode wird nur dann ausgeführt, wenn eine Bedingung erfüllt ist.
+
+```{python}
+a = 33
+
+if a < 100:
+    b = 100 + a
+    print('Die Zahl', a, 'ist kleiner als 100')
+    print('b =', b)
+
+print('a = ', a)
+```
+
+Sie sehen hier zwei besondere Merkmale der Programmiersprache Python - den **Doppelpunkt** und die **Einrückung**:
+
+- Der Doppelpunkt hinter der Bedingung sagt, dass jetzt ein Abschnitt Programmcode kommt, der zu dem `if` gehört.
+- Um diesen Zusammenhang zum Ausdruck zu bringen, werden die zugehörigen Zeilen nach rechts eingerückt. Hierzu verwendet man die Tabulatortaste. 
+
+Die Ausgabe von `a` soll hingegen auf jeden Fall erfolgen, die Zeile beginnt daher wieder in der ersten Spalte.
+
+Wenn nach dem `if` noch ein `else` kommt, dann spricht man von einer **Alternative**, der Block nach dem `else` wird ausgeführt, wenn
+die Bedingung nicht erfüllt ist. 
+
+```{python}
+a = 433
+
+if a < 100:
+    b = 100 + a
+    print('Die Zahl', a, 'ist kleiner als 100')
+else:
+    b = a - 100
+    print('Die Zahl', a, 'ist nicht kleiner als 100')
+
+print('b =', b)
+print('a = ', a)
+```
+
+Mithilfe des Schlüsselworts `elif` lassen sich **Mehrfachverzweigungen** realisieren. Hier nochmal das Beispiel der quadratischen
+Gleichung.
+
+```{python}
+# Eingabe
+a = 1
+b = 2
+c = 1
+
+# Diskriminante
+D = b**2 - 4 * a * c
+
+# Fälle
+if D > 0:
+    x1 = (-b - sqrt(D)) / (2 * a)
+    x2 = (-b + sqrt(D)) / (2 * a)
+    print('Die Gleichung besitzt zwei Lösungen x1 =', x1, ' und x2 =', x2)
+elif D == 0:
+    x1 = -b / (2 * a)
+    print('Die Gleichung besitzt eine Lösung x1 = ', x1)
+else:
+    print('Die Gleichung besitzt keine reellwertige Lösung')
+```
+
+#### Logische Ausdrücke
+
+Logische Ausdrücke werden meist mithilfe der Vergleichsoperatoren `==`, `!=`, `<`, `<=`, `>` und `>=` realisiert. Mithilfe der Schlüsselwörter `and`, `or` und `not` lassen sich
+mehrere Bedingungen miteinander verknüpfen. 
+
+Wir sehen das am Beispiel eines Schaltjahres:
+
+> Every year that is exactly divisible by four is a leap year, except for years that are exactly divisible by 100, but these centurial years are leap years if they are exactly divisible by 400. For example, the years 1700, 1800, and 1900 are not leap years, but the years 1600 and 2000 are.
+
+```{python}
+y = 1900
+
+if y%400 == 0 or (y%4 == 0 and not y%100 == 0):
+    print('Das Jahr', y, 'ist ein Schaltjahr')
+else:
+    print('Kein Schaltjahr:', y)
+```
+
+### Schleifen
+
+In einer ***`for` - Schleife*** nimmt eine Schleifenvariable nacheinander alle Werte eines listenartigen Objekts an (etwas vereinfacht gesagt).
+
+In der einfachsten Form sieht das so aus:
+
+```{python}
+list = [42, pi, 'Hallo!', 1 / 3]
+
+for o in list:
+    print('Element', o)
+```
+
+Sie sehen wieder die von der Alternative schon bekannte Kombination von Doppelpunkt und Einrückung!
+
+Manchmal ist es wichtig zu wissen, an welcher Position ein Element der Liste steht. In diesem Fall verwendet man eine 
+Zählvariable (in der Regel `i`, `j` oder `k`) in Kombination mit der `range` - Funktion und häufig auch `len`.
+
+```{python}
+for i in range(0, len(list)):
+    print('Element an Position', i, 'ist', list[i])
+```
+
+Bei einer `while` - Schleife werden Anweisungen so lange ausgeführt wie eine Fortsetzungsbeding erfüllt ist. Sehr häufig werden `while` - Schleifen 
+bei numerischen Näherungsverfahren verwendet, zum Beispiel bei der Berechnung einer Quadratwurzel mit dem Heron-Verfahren.
+
+```{python}
+# Wir suchen die Wurzel aus dieser Zahl
+a = 2
+
+# Startwert für die Näherungslösung
+x = 1
+
+# Iteration
+while abs(x**2 - a) > 1e-15:
+    x = 0.5 * (x + a / x)
+    print('Zwischenergebnis:', x)
+
+# Ergebnis
+print('Ergebnis: x =', x, 'mit x^2 =', x**2)
+```
+
+Dafür, welche der beiden Arten von Schleifen verwendet werden soll gibt es eine einfach Regel:
+- Verwenden Sie eine `for` - Schleife, wenn vorab bekannt ist, wie oft die Schleife durchlaufen werden soll. Dies ist insbesondere
+bei der Verarbeitung von Listen der Fall.
+- Andernfalls ist meist eine `while` - Schleife sinnvoll.
+
+## Funktionen
+
+Eine Funktion fasst Anweisungen so zusammen, so dass Sie mit unterschiedlichen Eingabewerten ausgeführt werden können. Hier ein Beispiel, in dem
+der größte gemeinsame Teiler von zwei ganzen Zahlen bestimmt wird ([Verfahren von Euklid](https://de.wikipedia.org/wiki/Euklidischer_Algorithmus)).
+
+```{python}
+def ggt(a, b):
+    while b != 0:
+        h = a % b
+        a = b
+        b = h
+    return a
+
+print('GGT von 33 und 88 ist', ggt(33, 88))
+```
+
+Eine Funktion beginnt also mit dem Schlüsselwort `def` gefolgt von dem Funktionsnamen, einer Parameterliste und (wieder) einem Doppelpunkt. Danach kommen
+eingerückt die Anweisungen im Rumpf der Funktion. Das berechnete Ergebnis wird mit `return` zurück gegeben.
+
+### Funktionen in eigenen Dateien
+
+Sollen Funktionen in mehreren Jupyter Notebooks verwendet werden, dann kann man sie in eine eigene Python-Datei auslagern. Zum Beispiel enthält die (im selben 
+Ordner wie die Jupyter Notebooks) liegende Datei
+`number_functions.py` (Zip-Datei von Moodle herunterladen) Funktionen aus dem Bereich der Zahlentheorie. Um diese zu verwenden müssen sie zunächst importiert werden.
+
+```{python}
+# Importieren
+from number_functions import *
+
+# Funktionen verwenden
+print("2 ist prim: ", is_prime(2))
+print("11 ist prim: ", is_prime(11))
+print("111 ist prim: ", is_prime(111))
+print("Primfaktoren von 126: ", prime_factors(126))
+
+# Test der Funktion is_prime
+passed = True
+for n in range(1, 10001):
+    product = 1
+    factors = prime_factors(n)
+    for f in factors:
+        product *= f
+        if not is_prime(f):
+            print("n =", n, ": Faktor", f, "ist nicht prim")
+            passed = False
+    if product != n:
+        print("n = ", n, ": Nicht Produkt der Primfaktoren: ", n)
+        passed = False
+if passed:
+    print("Primfaktoren für die Zahlen von 1 bis 10000 sind OK")
+
+# Nervig: Wenn wir in der Funktion etwas ändern wird sie standardmäßig nicht neu
+# geladen. Die autoreload - Erweiterung löst dieses Problem.
+%load_ext autoreload
+%autoreload 2
+```
+
+### Mehrere Rückgabewerte
+
+Funktionen können in Python mehrere Werte zurückgeben. Das Funktioniert so:
+
+* In der Return-Anweisung stehen mehrere Variablen durch Kommas getrennt
+
+* Beim Aufruf der Funktion stehen links vom Gleichheitszeichen ebenfalls mehrere Variablen, getrennt durch Kommas get
+
+* Die Anzahl der Variablen in der Return-Anweisung und beim Aufruf muss übereinstimmen, die Namen dürfen frei gewählt werden
+
+Hier nochmals das Beispiel mit der quadratischen Gleichung, diesmal in einer Funktion.
+
+```{python}
+def qroots(a, b, c):
+    d = sqrt(b**2 - 4 * a * c)
+    x1 = (-b - d) / (2 * a)
+    x2 = (-b + d) / (2 * a)
+    return x1, x2
+
+x1, x2 = qroots(1, -2, -3)
+print(" Lösungen: x1 =", x1, "und x2=", x2)
+```
+
+### Parametrisierte Funktionen
+
+Aus der Mathematik kennen Sie Funktionenscharen der Form
+
+$$
+    f_n(x) = (1 - x/n)^2.
+$$
+
+Gemeint ist damit, dass wir für jede Zahl $n$ eine Funktion $f_n$ erhalten, zum Beispiel
+
+$$
+    f_1(x) = (1 - x) ^ 2 \quad \text{oder} \quad f_5(x) = (1 - x / 5)^2.
+$$
+
+In Python lässt sich das durch eine Funktion realisieren, die eine Funktion zurückliefert. Für unser Beispiel
+sieht das so aus:
+
+```{python}
+def make_fn(n):
+    def fn(x):
+        return (1 - x / n)**2
+    return fn
+
+f1 = make_fn(1)
+f5 = make_fn(5)
+
+print("f1(2) =", f1(2))
+print("f5(2) =", f5(2))
+```
+
+## Weiterführende Themen
+
+### Mehrfachvariablen
+
+Es gibt Situationen, in denen verschiedene Werte zusammengehören, wie das zum Beispiel bei einem Quader mit Länge, Breite und Höhe der Fall ist. Hier bietet es sich an, die Werte in einem einzelnen Objekt zusammenzufassen, wie das mit dem `objdict`-Paket und der Klasse `ObjDict` möglich ist. Hier ein Beispiel. 
+
+```{python}
+from objdict import ObjDict
+
+# Define struct
+q = ObjDict()
+q.length = 3
+q.width = 2
+q.height = 5
+
+# Print
+print("Rectangular solid with dimensions:", q)
+
+# Compute volume and print
+v = q.length * q.width * q.height
+print("Volume V =", v)
+```
+

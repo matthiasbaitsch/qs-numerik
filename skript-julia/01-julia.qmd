@@ -1,0 +1,569 @@
+---
+title: Jupyter Notebooks und Julia
+engine: julia
+---
+
+
+Ein Jupyter Notebook ist ein Dokument, das sowohl Text als auch Programmcode enthalten kann. 
+In einer geeigneten Umgebung (z.B. browserbasiert in 
+[JupyterLab](https://mybinder.org/v2/gh/jupyterlab/jupyterlab-demo/master?urlpath=lab/tree/demo) 
+oder einer Entwicklungsumgebung wie
+[Visual Studio Code](https://code.visualstudio.com/docs/datascience/jupyter-notebooks)
+) 
+können damit interaktive Dokumente erstellt werden, die sich in verschiedene Formate exportieren lassen (HTML, PDF, LaTeX und Folien für Präsentationen).
+
+Ein Jupyter Notebook besteht aus Zellen die entweder
+
+- Text in [Markdown-Schreibweise](https://www.ibm.com/docs/en/db2-event-store/2.0.0?topic=notebooks-markdown-jupyter-cheatsheet) oder
+- Programmcode (bei uns Julia)
+
+enthalten können. Textzellen lassen sich mit einem Doppelklick bearbeiten, mit `Shift + Enter` schließen Sie die Bearbeitung ab.
+
+Bilder lassen sich mit `![Alternativer Text](Pfad)` ebenfalls einfügen. Zum Beispiel zeigt `![Julia Icon](pics/julia.png)` das Julia Logo
+
+![Julia Icon](pics/julia.png)
+
+das im Unterverzeichnis `pics` abgelegt ist.
+
+
+## Variablen, Operatoren und mathematische Funktionen
+
+Variablen enthalten Werte, im Beispiel unten eine Zeichenkette, eine Fließkommazahl und eine ganze Zahl. Die Ausgabe erfolgt mit der `print` - Funktion.
+
+```{julia}
+a = "Hallo"
+x = 3.1
+y = 42
+print(" a = ", a, ", x = ", x, ", y = ", y)
+```
+
+Für numerische Argumente haben die Operatoren `+`, `-`, `*`, `/` die üblichen Bedeutungen. Zusätzlich gibt es 
+
+- `%` - Rest einer Division
+- `÷` - Division mit Runden nach unten
+- `^` - Potenz
+
+```{julia}
+println(7 % 3)
+println(7 ÷ 3)
+println(7 ^ 3)
+```
+
+Es stehen die gängigen mathematischen Funktionen wie `sqrt`, `pow`, `sin`, `cos` sowie mathematische Konstanten, z.B. $\pi$ und $e$ zur Verfügung.
+
+```{julia}
+println("sqrt(4) = ", sqrt(4))
+println("exp(1) = ", exp(1))
+println(π, ", sin(π) = ", sin(π))
+println(ℯ, ", log(ℯ) = ", log(ℯ))
+```
+
+Julia verwendet den Unicode Zeichensatz, es können daher Symbole wie π verwendet werden. Die Eingabe erfolgt mit \pi und wir mit der Tabulatortaste umgewandelt. In VSCode muss hierzu der Julia Language Server funktionieren (Settings → Extensions → Julia → Executable Path - einfach nach 'julia executable path' suchen und in den Einstellungen für User eintragen).
+
+Hier die Liste der Symbole: https://docs.julialang.org/en/v1/manual/unicode-input/
+
+Man kann dann auch mit Emojis rechnen.
+
+```{julia}
+😬 = 3
+🤠 = 6
+👺 = 1
+☠️ = 4
+👺 * (😬 - 🤠) / ☠️
+```
+
+### Beispiel
+
+Die quadratische Gleichung $ax^2 + bx + c = 0$ besitzt die Lösungen
+
+$$
+    x_{1,2} = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
+$$
+
+die hier in Julia berechnet werden:
+
+```{julia}
+a =  1
+b = -2
+c = -3
+x1 = (-b - sqrt(b^2 - 4 * a * c)) / (2 * a)
+x2 = (-b + sqrt(b^2 - 4 * a * c)) / (2 * a)
+print("Lösungen: x1 = ", x1, " und x2 = ", x2)
+```
+
+## Arrays
+
+Ein Array in Julia (und allen anderen mir bekannten Programmiersprachen) kann man sich als eine Sequenz von Kästchen vorstellen. Jedes Kästchen kann beliebige Julia-Objekte enthalten, die beim Erzeugen der Liste
+in eckige Klammern geschrieben und durch Kommata getrennt werden. Später werden wir noch ausführlich über Arrays von Zahlen sprechen, alles hier gesagte gilt dort auch.
+
+```{julia}
+l = [π, "Hallo!", 2021]
+print("Array l = ", l)
+```
+
+Wird ein Array ausgegeben, dann schreibt Julia den Datentyp der enthaltenen Objekte dazu, `Any` kann beliebige Werte enthalten.
+
+Der Zugriff auf den Inhalt der Kästchen erfolgt mit einem Index, wobei das erste Kästchen den Index `1` hat. Die Länge erhält man
+mit der Funktion `length`.
+
+```{julia}
+println("Inhalt von Array l im zweiten Kästchen: ", l[2])
+l[2] = "Auf Wiedersehen!"
+println("Geänderte Liste: ", l)
+println("Anzahl der Kästchen in l: ", length(l))
+```
+
+Arrays können auch Schritt für Schritt erzeugt werden. Es ist zum Beispiel möglich, mit einer leeren Liste zu beginnen und Kästchen anzuhängen.
+
+```{julia}
+h = []
+append!(h, ["Bonjour!"])
+append!(h, 1789)
+append!(h, ℯ)
+println("Array h = ", h)
+```
+
+Aufgabe:
+- Was passiert, wenn Sie in Zeile zwei die eckigen Klammern weglassen?
+
+Sie sehen hier eine Konvention, die in Julia durchgängig Verwendung findet: Funktionen, die einen Parameter verändern (hier das Array) enden mit einem Ausrufungszeichen.
+
+Es gibt vielfältige Möglichkeiten mit Arrays zu Arbeiten, Hier ein paar Beispiele:
+
+```{julia}
+display([l, l])
+display([l; l])
+println(indexin(2021, l))
+println(indexin(2022, l))
+```
+
+### Ranges
+
+Ein nützliches Objekt, das sich ähnlich wie ein Array verhält (aber keinees ist), wird mit dem Doppelpunktoperator erzeugt. Mit den ganzen Zahlen `a` und `b`
+liefert `a:b` die Sequenz
+
+$$
+    a, a + 1, \dots, b
+$$
+
+die obere Grenze `b` ist also enthalten. Man kann mit der Form `a:inc:b` zusätzlich noch ein Inkrement angeben und erhält
+
+$$
+    a, a + inc, \dots, b
+$$
+
+Eine Range ist ist in Julia eine eigenständiges Objekt, mit `collect` wird daraus ein Array.
+
+```{julia}
+r = 2:7
+println(r)
+println(collect(r))
+println(collect(2:3:10))
+
+println("Anzahl Elemente: ", length(r))
+println("r[1] = ", r[1], ", r[2] = ", r[2], ", ... , r[4] = ", r[4] )
+```
+
+## Kontrollstrukturen
+
+### Verzweigungen mit if, elseif und else
+
+In einer **bedingten Anweisung** wird Programmcode wird nur dann ausgeführt, wenn eine Bedingung erfüllt ist.
+
+```{julia}
+a = 33
+
+if a < 100
+    b = 100 + a
+    println("Die Zahl ", a, " ist kleiner als 100 ")
+    println("b = ", b)
+end
+
+println("a = ", a)
+```
+
+Wenn nach dem `if` noch ein `else` kommt, dann spricht man von einer **Alternative**, der Block nach dem `else` wird ausgeführt, wenn
+die Bedingung nicht erfüllt ist. 
+
+```{julia}
+a = 433
+
+if a < 100
+    b = 100 + a
+    println("Die Zahl ", a, " ist kleiner als 100")
+else
+    b = a - 100
+    println("Die Zahl ", a, " ist nicht kleiner als 100")
+end
+
+println("b = ", b)
+println("a = ", a)
+```
+
+Mithilfe des Schlüsselworts `elseif` lassen sich **Mehrfachverzweigungen** realisieren. Hier nochmal das Beispiel der quadratischen
+Gleichung.
+
+```{julia}
+# Eingabe
+a = 1
+b = 2
+c = 1
+
+# Diskriminante
+D = b^2 - 4 * a * c
+
+# Fälle
+if D > 0
+    x1 = (-b - sqrt(D)) / (2 * a)
+    x2 = (-b + sqrt(D)) / (2 * a)
+    print("Die Gleichung besitzt zwei Lösungen x1 = ", x1, " und x2 = ", x2)
+elseif D == 0
+    x1 = -b / (2 * a)
+    print("Die Gleichung besitzt eine Lösung x1 = ", x1)
+else
+    print("Die Gleichung besitzt keine reellwertige Lösung")
+end
+```
+
+#### Logische Ausdrücke
+
+Logische Ausdrücke werden meist mithilfe der Vergleichsoperatoren `==`, `!=`, `<`, `<=`, `>` und `>=` realisiert. Mithilfe von `&&`, `||` und `!` lassen sich
+mehrere Bedingungen miteinander verknüpfen. 
+
+Wir sehen das am Beispiel eines Schaltjahres:
+
+> Every year that is exactly divisible by four is a leap year, except for years that are exactly divisible by 100, but these centurial years are leap years if they are exactly divisible by 400. For example, the years 1700, 1800, and 1900 are not leap years, but the years 1600 and 2000 are.
+
+```{julia}
+y = 1988
+
+if y % 400 == 0 || (y % 4 == 0 && !(y % 100 == 0))
+    print("Das Jahr ", y, " ist ein Schaltjahr")
+else
+    print("Kein Schaltjahr: ", y)
+end
+```
+
+Aufgabe:
+- Wie kann man das noch ein bisschen kürzer schreiben?
+
+### Schleifen
+
+Bei einer ***`for` - Schleife*** steht von vorneherein fest, wie oft sie durchlaufen wird.
+
+```{julia}
+for o in [42, π, "Hallo!", 1 / 3]
+    println("Element " , o)
+end
+```
+
+Das funktioniert auch mit Ranges:
+
+```{julia}
+for i in 1:5
+    println(i^3)
+end
+```
+
+Eine `for`-Schleife kann man statt mit `in` auch mit dem mathematischen Symbol $\in$ schreiben
+
+```{julia}
+for i ∈ 1:5
+    print(i^3, " ")
+end
+```
+
+was sehr schön zum Ausdruck bringt, dass `i` nacheinander den Wert aller ganzen Zahlen von 1 bis 5 annimmt.
+
+Manchmal ist es wichtig zu wissen, an welcher Position ein Element der Liste steht. In diesem Fall verwendet man eine 
+Zählvariable (in der Regel `i`, `j` oder `k`) in Kombination mit dem `:` - Operator und häufig auch `length`.
+
+```{julia}
+for i in 1:length(l)
+    println("i = ", i, ", l[i] = ", l[i])
+end
+```
+
+Geschachtelte Schleifen wie
+
+```{julia}
+for i in 1:3
+    for j in 5:6
+        print(i, '-', j, ' ')
+    end
+end
+```
+
+lassen sich in Julia auch kompakt schreiben als
+
+```{julia}
+for i in 1:3, j in 5:6
+    print(i, '-', j, ' ')
+end
+```
+
+Bei einer `while` - Schleife werden Anweisungen so lange ausgeführt wie eine Fortsetzungsbeding erfüllt ist. Sehr häufig werden `while` - Schleifen 
+bei numerischen Näherungsverfahren verwendet, zum Beispiel bei der Berechnung einer Quadratwurzel mit dem Heron-Verfahren.
+
+```{julia}
+# Wir suchen die Wurzel aus dieser Zahl
+a = 2
+
+# Startwert für die Näherungslösung
+x = 1
+
+# Iteration
+while abs(x^2 - a) > 1e-10
+    x = 0.5 * (x + a / x)
+    println("Zwischenergebnis: ", x)
+end
+
+# Ergebnis
+print("Ergebnis: x = ", x, " mit x^2 = ", x^2)
+```
+
+Dafür, welche der beiden Arten von Schleifen verwendet werden soll gibt es eine einfach Regel:
+- Verwenden Sie eine `for` - Schleife, wenn vorab bekannt ist, wie oft die Schleife durchlaufen werden soll. Dies ist insbesondere
+bei der Verarbeitung von Listen der Fall.
+- Andernfalls ist meist eine `while` - Schleife sinnvoll.
+
+**Exkurs**: In Julia sind rationale Zahlen eingebaut, `1 // 2` ist der Bruch $1/2$. Damit kann man dann exakt rechnen und herausfinden, dass $665857/470832$ eine ziemlich ordentliche Näherung an die irrationale Zahl $\sqrt{2}$ ist.
+
+```{julia}
+a = 2
+x = 1
+while abs(x^2 - a) > 1e-10
+    x = 1 // 2 * (x + a // x)
+    println("Zwischenergebnis: ", x)
+end
+
+# Ergebnis
+print("Ergebnis: x = ", x, " mit x^2 = ", float(x)^2)
+```
+
+## Funktionen
+
+Eine Funktion fasst Anweisungen so zusammen, so dass Sie mit unterschiedlichen Eingabewerten ausgeführt werden können. Hier ein Beispiel, in dem
+der größte gemeinsame Teiler von zwei ganzen Zahlen bestimmt wird ([Verfahren von Euklid](https://de.wikipedia.org/wiki/Euklidischer_Algorithmus)).
+
+```{julia}
+function ggt(a, b)
+    while b != 0
+        h = a % b
+        a = b
+        b = h
+    end
+    return a
+end
+
+print("GGT von 33 und 88 ist ", ggt(33, 88))
+```
+
+Eine Funktion beginnt also mit dem Schlüsselwort `function` gefolgt von dem Funktionsnamen, einer Parameterliste. Danach kommen
+ die Anweisungen im Rumpf der Funktion, gefolgt von einem `end`. Das berechnete Ergebnis wird mit `return` zurück gegeben (`return` kann man ggf. auch weglassen).
+
+Kurze Funktionen kann man auch in der aus der Mathematik bekannten Schreibweise definieren.
+
+```{julia}
+f(x, y) = x^2 + y^2
+
+f(2, 3)
+```
+
+### Funktionen in eigenen Dateien
+
+Sollen Funktionen in mehreren Jupyter Notebooks verwendet werden, dann kann man sie in eine eigene Julia-Datei auslagern. Zum Beispiel enthält die (im selben 
+Ordner wie die Jupyter Notebooks) liegende Datei
+`number_functions.jl` (Zip-Datei von Moodle herunterladen) Funktionen aus dem Bereich der Zahlentheorie. Um diese zu verwenden müssen sie zunächst importiert werden.
+
+```{julia}
+include("numberfunctions.jl")
+
+# Funktionen verwenden
+println("2 ist prim: ", isprime(2))
+println("11 ist prim: ", isprime(11))
+println("111 ist prim: ", isprime(111))
+println("Primfaktoren von 126: ", primefactors(126))
+
+# Test der Funktion isprime
+passed = true
+for n in 1:10000
+    product = 1
+    factors = primefactors(n)
+    for f in factors
+        product *= f
+        if !isprime(f)
+            println("n = ", n, ": Faktor", f, " ist nicht prim")
+            passed = false
+        end
+    end
+    if product != n
+        println("n = ", n, ": Nicht Produkt der Primfaktoren: ", n)
+        passed = false
+    end
+end
+if passed
+    println("Primfaktoren für die Zahlen von 1 bis 10000 sind OK")
+end
+```
+
+### Mehrere Rückgabewerte
+
+Funktionen können in Julia mehrere Werte zurückgeben. Das Funktioniert so:
+
+* In der Return-Anweisung stehen mehrere Variablen durch Kommas getrennt
+
+* Beim Aufruf der Funktion stehen links vom Gleichheitszeichen ebenfalls mehrere Variablen, getrennt durch Kommas
+
+* Die Anzahl der Variablen in der Return-Anweisung und beim Aufruf muss übereinstimmen, die Namen dürfen frei gewählt werden
+
+Hier nochmals das Beispiel mit der quadratischen Gleichung, diesmal in einer Funktion.
+
+```{julia}
+function qroots(a, b, c)
+    d = sqrt(b^2 - 4 * a * c)
+    x1 = (-b - d) / (2 * a)
+    x2 = (-b + d) / (2 * a)
+    return x1, x2
+end
+x1, x2 = qroots(1, -2, -3)
+print("Lösungen: x1 = ", x1, " und x2 = ", x2)
+```
+
+### Parametrisierte Funktionen
+
+Aus der Mathematik kennen Sie Funktionenscharen der Form
+
+$$
+    f_n(x) = (1 - x/n)^2.
+$$
+
+Gemeint ist damit, dass wir für jede Zahl $n$ eine Funktion $f_n$ erhalten, zum Beispiel
+
+$$
+    f_1(x) = (1 - x) ^ 2 \quad \text{oder} \quad f_5(x) = (1 - x / 5)^2.
+$$
+
+In Julia lässt sich das durch eine Funktion realisieren, die eine Funktion zurückliefert. Für unser Beispiel
+sieht das so aus:
+
+```{julia}
+function makefn(n)
+    function fn(x)
+        return (1 - x / n)^2
+    end
+    return fn
+end
+
+f1 = makefn(1)
+f5 = makefn(5)
+
+println("f1(2) = ", f1(2))
+println("f5(2) = ", f5(2))
+```
+
+### Exkurs: Optionale und benannte Parameter
+
+Die letzten Parameter einer Funktion können voreingestellte Werte haben
+
+```{julia}
+f(x, y = 1, z = 2) = x + y + z
+
+println("f(1, 10, 100) = ", f(1, 10, 100))
+println("f(100, 9) = ", f(100, 9))
+println("f(108) = ", f(108))
+```
+
+Die Werte werden eingesetzt, wenn man die Parameter beim Aufrufen weglässt. 
+
+In dem Funktionsaufruf `f(1, 10, 100)` erhält der Parameter `x` den Wert `1`, da in der Parameterliste an erster Stelle stehen. Man spricht hier von Positionsparametern. Eine weitere Möglichkeit sind benannte Parameter. Hier ein Beispiel:
+
+```{julia}
+f(x; y, z) = x + y + z
+println("f(100, z = 3, y = 8) = ", f(100, z = 3, y = 8))
+```
+
+Das funktioniert so:
+
+- In der Funktionsdeklaration wird die Liste der Positionsparameter durch ein Semikolon von der Liste der benannten Parameter abgetrennt
+
+- Beim Funktionsaufruf ist für die benannten Parameter der Name anzugeben. Die Reihenfolge spielt dann keine Rolle und das Semikolon braucht man auch nicht
+
+Auch bei benannten Parameterlisten können Parameter wieder voreingestelle Werte besitzen:
+
+```{julia}
+f(r, s = 3, t = 4; x, y = 5, z = 6) = r + s + t + x + y + z
+
+println("f(90, x = 3) = ", f(90, x = 3))
+println("f(89, 4, z = 7, x = 2) = ", f(89, 4, z = 7, x = 2))
+```
+
+## Weiterführende Themen
+
+### Benannte Tupel and Structs
+
+Es gibt Situationen, in denen verschiedene Werte zusammengehören, wie das zum Beispiel bei einem Quader mit Länge, Breite und Höhe der Fall ist. Dann bietet es sich an, benannte Tupel oder structs zu verwenden.
+
+Ein benanntes Tupel ist eine Sammlung von benannten Werten, die beim Erzeugen belegt werden. Auf die Werte kann man anschließend mit dem Namen zugreifen.
+
+```{julia}
+q = (
+    length = 3,
+    width = 5,
+    height = 2
+)
+
+println("q = ", q)
+println("V = ", q.length * q.width * q.height)
+```
+
+Eine benanntes Tupel kann als Parameter an eine Funktion übergeben werden:
+
+```{julia}
+volume(b) = b.length * b.width * b.height
+
+println("Volumen V = ", volume(q))
+```
+
+Kommen in einem Programm gleichartige Objekte häufig vor, dann ist es in der Regel einfacher, diese in einem Struct abzubilden.
+
+```{julia}
+# Define struct
+struct Box 
+    length 
+    width
+    height
+end
+
+# Create two boxes
+q1 = Box(3, 2, 5)
+q2 = Box(4, 7, 2)
+
+# Print
+println(q1)
+println(q2)
+
+# Compute volume and print (function works for named tuples and structs as well)
+println("volume(q1) = ", volume(q1))
+println("volume(q2) = ", volume(q2))
+```
+
+Hinweis: Structs sind ein fundamentales Konzept für die Erstellung komplexer Programme in Julia. Wir kratzen hier nur ein bisschen an der Oberfläche.
+
+### Das Revise-Paket
+
+Mit dem `Revise`-Paket kann der Code mehrfach ausgeführt werden, ohne dass Julia sich über die neue Deklaration von Box beschwert. Am besten, man erledigt das automatisch.
+
+Hier die Anleitung von https://quarto.org/docs/computations/julia.html#installation:
+
+To configure Revise to launch automatically within IJulia, create a .julia/config/startup_ijulia.jl file with the contents:
+
+```
+try
+  @eval using Revise
+catch e
+  @warn "Revise init" exception=(e, catch_backtrace())
+end
+```
+
+

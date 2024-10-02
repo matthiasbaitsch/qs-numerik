@@ -1,0 +1,329 @@
+---
+title: Rechnen mit Vektoren und Matrizen
+engine: julia
+---
+
+
+In numerischen Anwendungen sind Matrizen und Vektoren allgegenwärtig. In Julia sind die entsprechenden Datentypen und Operationen änlich wie in Matlab eingebaut. Allerdings müssen für bestimmte Aufgaben Pakete importiert werden.
+
+
+## Grundlagen
+
+In Julia sind Vektoren und Matrizen Spezialfälle von $n$-dimensionalen Arrays für einen Vektor gilt $n = 1$ und für eine Matrix $n = 2$.
+Uns wird das in der Regel ausreichen aber prinzipiell kann man auch mit fünfdimensionalen Arrays rechnen.
+
+### Erzeugen
+
+Eine erste Möglichkeit Vektoren und Matrizen zu erzeugen besteht darin, die **Einträge direkt anzugeben**:
+
+```{julia}
+u = [1 2 3]
+x = [5; 1; 9; 2]
+y = [1; 2; 1; 3]
+A = [1 2 3 4; 7 6 5 4; 6 4 6 4]
+B = [2 1; 5 6; 9 1];
+```
+
+Damit haben wir den Zeilenvektor u erzeugt (eine $1 \times 3$ Matrix)
+
+```{julia}
+u
+```
+
+Demgegenüber entsprechen x und y den Vektoren, wie sie überlicherweise in der Mathematik verwendet werden:
+
+```{julia}
+x
+```
+
+```{julia}
+y
+```
+
+Bei A und B handelt es sich um "normale" Matrizen
+
+```{julia}
+A
+```
+
+Aufgabe
+
+- Wie funktioniert die Eingabe?
+
+Weiterhin gibt es Funktionen, mit denen sich **spezielle Matrizen und Vektoren** anlegen lassen.
+
+```{julia}
+println("    Nullvektor: ", zeros(3))
+println("    Nullmatrix: ", zeros(2, 3))
+println("    Einsmatrix: ", ones(4, 2))
+```
+
+Auf die Einheitsmatrix werden wir später eingehen.
+
+Praktisch ist die Funktion `range`, die ein Intervall von $a$ bis $b$ in $n - 1$ gleichlange Abschnitte unterteilt.
+
+```{julia}
+x = range(1, 5, 6)
+```
+
+Es handelt sich wieder um ein spezielles Objekt für das die einzelnen Werte erst berechnet werden, wenn man sie braucht. Mit `collect` wird daraus wieder ein Vektor.
+
+```{julia}
+collect(x)
+```
+
+### Eigenschaften von Arrays
+
+Die Eigenschaften eines Arrays lassen sich mit verschiedenen Funktionen abfragen.
+
+```{julia}
+println("length(x) = ", length(x))
+println("ndims(A) = ", ndims(A))
+println("size(A) = ", size(A))
+println("size(A, 1) = ", size(A, 1))
+println("size(A, 2) = ", size(A, 2))
+```
+
+### Auf Einträge zugreifen
+
+Um auf die Einträge von Arrays zuzugreifen verwendet man eckige Klammern `[]`, die Indizierung
+beginnt bei 1. Bei Matrizen werden Zeilen- und Spaltenindex durch ein Komma getrennt.
+
+```{julia}
+A[1, 2] = 999
+println("A = ", A)
+println("x[0] = ", x[2])
+```
+
+Mit `end` wird vom Ende des Arrays gezählt. Dabei liefert `end` das letzte Element, `end - 1` das vorletzte, usw.
+
+```{julia}
+println("A = ", A)
+println("A[end, end-2] = ", A[end, end - 1])
+```
+
+Häufig möchte man in einem Rechenschritt auf mehrere Einträge eines Arrays gleichzeitig zugreifen. Hierfür gibt es zwei Möglichkeiten:
+
+- Den Doppelpunkt-Operator
+- Die Indizierung mithilfe von Integer-Arrays 
+
+#### Doppelpunkt-Operator
+
+Die Schreibweisen `start:stop` oder `start:inc:stop` zur Erzeugung einer Sequenz von Zahlen haben wir bereits kennengelernt. Eine solche Sequenz kann zur Indizierung verwendet werden:
+
+```{julia}
+y = [9; 3; 5; 1; 7; 4; 99];
+println("y = ", y)
+println("y[2:4] = ", y[2:5])
+println("y[3:end] = ", y[3:end])
+```
+
+Offenbar kann man auch hier wieder `end` verwenden.
+
+Die Adressierung mit dem Doppelpunkt funktioniert auch bei Zuweisungen. Hier ein Beispiel:
+
+```{julia}
+A = [1 2 3 4; 5 6 7 8; 9 10 11 12]
+println("A =")
+display(A)
+A[1:3, 3:4] = [11 22; 77 88; 99 11]
+println("A =")
+display(A)
+```
+
+Wichtig dabei ist, dass die Dimensionen links und rechts vom Gleichheitszeichen zusammenpassen.
+
+#### Index-Arrays
+
+Mithilfe von Index-Arrays lassen sich nicht-fortlaufende Bereiche adressieren
+
+```{julia}
+x = [1 2 3 4 5 6 7]
+println("x = ", x)
+x[[1 3 7]] = [11 33 77]
+println("x = ", x)
+```
+
+## Rechnen mit Matrizen und Vektoren
+
+In Julia ist es möglich, Rechnungen mit Matrizen und Vektoren sehr kompakt und fast wie auf dem Papier aufzuschreiben.
+
+### Rechenoperation
+
+Die mathematischen Operatoren `+, -, *` sind fast so definiert, wie wir das aus der Mathematik kennen, wobei man für das Matrix-Vektor-Produkt $\mathbf{A}\mathbf{x}$ in Julia `A*x` schreibt.
+
+```{julia}
+x = [5; 1; 6]
+```
+
+```{julia}
+y = [9; 13; 8]
+```
+
+```{julia}
+A = [1 2 3; 5 4 3]
+```
+
+```{julia}
+B = [1 1; 2 2; 3 3]
+```
+
+```{julia}
+x + 2*y
+```
+
+Eine Besonderheit in Julia ist, dass man das *-Zeichen zwischen einer Zahl und einer Variablen auch weglassen kann:
+
+```{julia}
+5x - 2y
+```
+
+```{julia}
+A*x
+```
+
+```{julia}
+A*B
+```
+
+Mit einem angehängten Apostroph `'` wird eine Matrix oder eines Vektors transponiert.
+
+```{julia}
+A'
+```
+
+```{julia}
+x'
+```
+
+Dabei ist die Transponierte eines Vektors ein Zeilenvektor, also eine $1xn$-Matrix. Lassen Sie sich hier von dem Wort `adjoint` nicht abschrecken, für uns hat es keine tiefergehende Bedeutung.
+
+### Elementweise Operationen
+
+Manchmal möchte man Operationen elementweise anwenden, zum Beispiel zu jedem Eintrag des Vektors eine Zahl addieren oder für alle Einträge den Sinus berechnen. Hierzu wird in Julia (das ist durchgängig so) an die Funktion oder den Operator ein Punkt angehängt (in Matlab gibt es die Konvention auch, dort ist sie aber nicht durchgängig umgesetzt).
+
+```{julia}
+x .+ 5
+```
+
+```{julia}
+sin.(x)
+```
+
+Das Prinzip funktioniert auch wenn beide Operanden Arrays sind, zum Beispiel führt `.*` eine Elementweise Multiplikation aus.
+
+```{julia}
+x .* y
+```
+
+### Lineare Algebra
+
+Funktionen aus dem Bereich der linearen Algebra, etwa zum Lösen linearer Gleichungssysteme, befinden sich im Paket `LinearAlgebra`, das zunächst installiert werden muss. Das geht beispielsweise so:
+
+```{julia}
+#| echo: false
+using Pkg
+Pkg.add("LinearAlgebra")
+```
+
+Nachdem das Paket installiert wurde können diese Zeilen gelöscht werden.
+
+Um die entsprechenden Funktionen zu nutzen, wird zunächst das Paket importiert.
+
+```{julia}
+using LinearAlgebra
+```
+
+Wir beginnen mit dem Skalarprodukt von zwei Vektoren. Das Skalarprodukt von zwei Vektor berechnet `dot` oder der `⋅` (Eingabe mit `\cdot`)
+
+```{julia}
+println("x ⋅ y = ", x ⋅ y)
+println("dot(x, y) = ", dot(x, y))
+```
+
+während es für das Kreuzprodukt kein eigenes Symbol gibt
+
+```{julia}
+u = [3; 2; 1]
+v = [5; -1; 4]
+w = cross(u, v)
+
+println("u = ", u)
+println("v = ", v)
+println("w = (u x v) = ", w)
+println("Natürlich gilt u ⋅ w = ", u ⋅ w, " und v ⋅ w = ", v ⋅ w)
+```
+
+Lineare Gleichungssysteme lassen sich mit dem `\` - Operator lösen.
+
+```{julia}
+A = [5  2; 6 1]
+b = [5; 2]
+x = A \ b
+```
+
+Die Verwendung des `\`-Operators kann man sich schlecht merken (findet der Autor). Vielleicht hilft folgende Erklärung. Auf Englisch heißt der Operator _left-division_ Operator, was sich folgendermaßen verstehen lässt. Wir beginnen mit dem einfachen Fall der skalaren Gleichung $ax = b$, die man dadurch löst, dass man auf beiden Seiten durch $a$ dividiert und damit $ax / a = b / a$ also $x = b/a$ erhält. Für die Vektorgleichung
+
+$$
+    \mathbf{A}\mathbf{x} = \mathbf{b}
+$$
+
+kann man aber nicht einfach durch $\mathbf{A}$ teilen. Man schreibt stattdessen
+
+$$
+    \mathbf{A} \backslash \mathbf{A} \mathbf{x} = \mathbf{A} \backslash \mathbf{b}
+$$
+
+und meint mit $\mathbf{A} \backslash$ nichts anderes als die Multiplikation mit der Inversen $\mathbf{A}^1$. Also sozusagen dividieren von links, daher der Divisionsstrich in die andere Richtung. Mit dieser Überlegung ist
+
+$$
+    \underbrace{\mathbf{A} \backslash \mathbf{A}}_\mathbf{I} \mathbf{x} = \mathbf{A} \backslash \mathbf{b} \iff \mathbf{x} = \mathbf{A} \backslash \mathbf{b}
+$$
+
+und die Schreibweise damit durchaus sinnvoll. Mit $\mathbf{I}$ ist die Einheitsmatrix gemeint, im Zweifelsfall nochmal im Skript Mathematik I nachlesen. Und: Googeln Sie mal '_matrix left division_' - die Schreibweise ist ziemlich weit verbreitet.
+
+Zum Schluss noch die obligatorische Kontrolle
+
+```{julia}
+A*x - b
+```
+
+Für die Einheitsmatrix 
+
+$$
+    \mathbf{I} 
+    =
+    \left[
+        \begin{array}{ccccc}
+            1 & 0 & 0 & \cdots & 0 \\
+            0 & 1 & 0 & \cdots & 0 \\
+            0 & 0 & 1 & \cdots & 0 \\
+            \vdots & \vdots & \vdots & \ddots & \vdots \\
+            0 & 0 & 0 & \cdots & 1
+        \end{array}
+    \right]
+$$
+
+wird in Julia das Symbol `I` verwendet, für das man keine Größe angeben muss, es funktioniert, wie man das aus der Mathematik kennt. Zum Beispiel bei der Multiplikation mit einem Vektor
+
+```{julia}
+I * u
+```
+
+oder der Addition zu einer anderen Matrix (auf der Diagonalen von $A$ stehen $5$ und $1$).
+
+```{julia}
+A + I
+```
+
+Exkurs: Interessanterweise belegt `I` dabei genau ein Byte Speicherplatz, während Vektoren einen gewissen Overhead und für jeden double-Werte 8 Bytes benötigen.
+
+```{julia}
+println("Einheitsmatrix: ", Base.summarysize(I))
+println("Speicher für Vektor mit   3 Elementen: ", Base.summarysize([1.0, 2.0, 3.0]))
+println("Speicher für Vektor mit   4 Elementen: ", Base.summarysize([1.0, 2.0, 3.0, 4.0]))
+```
+
+Die Nullen werden also gar nicht gespeichert. Wie funktioniert das? In Julia können Funktionen und Operatoren unterschiedlich für verschiedene Datentypen implementiert werden. Es gibt also eine spezielle Version von `*` für die Einheitsmatrix und einen Vektor, der einfach den Vektor zurückliefert. Das ist eine sehr schöne Anwendung eines der fundamentalen Konzepte von Julia, dem _Multiple Dispatch_. Ein Vortrag zum Thema gibt es hier https://youtu.be/kc9HwsxE1OY, Stefan Karpinski ist einer der Autoren von Julia, dementsprechend ist er ziemlich begeistert von der Sache. Trotzdem intressant.
+
+

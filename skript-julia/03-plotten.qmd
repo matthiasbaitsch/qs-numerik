@@ -1,0 +1,97 @@
+---
+title: Plots erstellen
+engine: julia
+---
+
+
+Mit dem [Plots-Paket](https://docs.juliaplots.org/stable) lassen sich eine Vielzahl verschiedener Plots erstellen, [hier](https://docs.juliaplots.org/stable/gallery/gr/) eine Sammlung von Beispielen. 
+
+Vor der ersten Benutzung müssen die Pakete `Plots` und `Conda` installiert werden. Das geht zum Beispiel so:
+
+```{julia}
+#| output: false
+using Pkg
+Pkg.add("Plots")
+Pkg.add("Conda")
+```
+
+Die Installation dauert leider recht lange, also Geduld. Sie können die Anweisungen oben nach erfolgreicher Installation gleich wieder löschen, das ist nur ein Mal notwendig.
+
+
+Wie immer muss die Bibliothek importiert werden (kann wieder etwas dauern).
+
+```{julia}
+using Plots
+```
+
+## Linienplots
+
+Linienplots erstellt man mit der Funktion `plot`, im einfachsten Fall werden zwei Arrays übergeben, in denen $x$-Koordinaten und $y$-Koordinaten stehen. Die `plot`-Funktion verbindet diese Punkte, so dass ein Polygonzug entsteht. 
+
+```{julia}
+plot([0, 3, 3, 2, 1], [0, 0, 2, 2, 1])
+```
+
+Die `plot`-Funktion akzeptiert auch Funktionen als Parameter, typischerweise werden zusätzlich noch die Grenzen des Plotbereichs übergeben.
+
+```{julia}
+plot(sin, 0, 2π)
+```
+
+Das funktioniert auch für selbstdefinierte Funktionen
+
+```{julia}
+f(x) = sin(x^3)
+plot(f, 0, 5)
+```
+
+Um mehrere Datensätze zu plotten werden die y-Werte in einem Array zusammengefasst.
+
+```{julia}
+x = 0:3
+y1 = [1, 0, 1, 0]
+y2 = [0, 1, 0, 1]
+plot(x, [y1, y2])
+```
+
+Mehrere Funktionen werden auch wieder in einem Array übergeben:
+
+```{julia}
+plot([sin, cos], 0, 2π)
+```
+
+### Plots beschriften
+
+```{julia}
+plot(
+    [sin, cos, tan], 
+    0, 2π, 
+    title = "Trigonometrische Funktionen", 
+    labels = ["Sinus" "Kosinus" "Tangens"],
+    xlabel = "x", ylabel = "y", 
+    xticks = (0:π:2π, ["0", "\\pi", "2\\pi"]),
+    yrange = [-2, 2],
+    yticks = [-1, 0, 1]
+)
+```
+
+Plots lassen sich auch Schritt für Schritt erzeugen, dazu wird nach dem ersten plot die Funktion `plot!` verwendet.
+
+```{julia}
+plot(sin, 0, 2π)
+plot!(cos, 0, 2π)
+plot!(title = "Trigonometrische Funktionen")
+```
+
+### In einer Schleife plotten
+
+Sollen plots in einer Schleife erzeugt werden, dann geht das wie erwartet mit `plot!`. Allerdings muss am Ende noch dazu gesagt werden, dass der Plot angezeigt werden soll.
+
+```{julia}
+plot(x -> -1 + x / π, 0, 2π)
+for i in 1:4
+    plot!(x -> sin(i * x), 0, 2π, label = "i = $i")
+end
+current()
+```
+

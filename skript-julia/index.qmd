@@ -1,0 +1,6 @@
+# Vorbemerkungen
+
+Dieses kleine Buch ist eine komprimierte Einführung in das Programmieren in Julia mit Jupyter Notebooks 
+für Anwendungen in der numerischen Mathematik. 
+Es richtet sich an Menschen, die schon Erfahrungen im Programmieren gesammelt haben und fasst die allerwichtigsten 
+Sprachelemente von Julia sowie die Grundkonzepte des Arbeitens mit Matrizen und Vektoren sowie das Plotten zusammen.

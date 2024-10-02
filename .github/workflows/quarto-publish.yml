@@ -1,0 +1,47 @@
+name: Build and deploy
+
+on:
+  push:
+    branches: main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  render-and-zip:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+      - name: Set up Julia
+        uses: julia-actions/setup-julia@v1
+      - name: Checkout
+        uses: actions/checkout@v4     
+      - name: Install required command line tools
+        run: sudo apt-get install librsvg2-bin zip
+      - name: Install tinytex
+        run: quarto install tinytex
+      - name: Quarto render for Julia
+        run: quarto render skript-julia
+      - name: Prepare notebooks
+        run: julia prepare-zipfile.jl julia
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '_build'
+      - name: Cache Julia packages
+        uses: julia-actions/cache@v1
+
+  deploy:
+    needs: render-and-zip
+    environment:
+      name: github-pages
+    runs-on: ubuntu-latest
+    steps:    
+    - name: Setup Pages
+      uses: actions/configure-pages@v5
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4

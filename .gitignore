@@ -2,3 +2,4 @@ _build
 dist
 *.zip
 site_libs
+*copy.yml

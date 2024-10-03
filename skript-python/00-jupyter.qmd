@@ -1,0 +1,24 @@
+---
+title: Jupyter Notebooks
+jupyter: python3
+---
+
+
+## Jupyter Notebooks
+
+Ein Jupyter Notebook ist ein Dokument, das sowohl Text als auch Programmcode enthalten kann. 
+In einer geeigneten Umgebung (z.B. browserbasiert in 
+[JupyterLab](https://mybinder.org/v2/gh/jupyterlab/jupyterlab-demo/master?urlpath=lab/tree/demo) 
+oder einer Entwicklungsumgebung wie
+[Visual Studio Code](https://code.visualstudio.com/docs/datascience/jupyter-notebooks)
+) 
+können damit interaktive Dokumente erstellt werden, die sich in verschiedene Formate exportieren lassen (HTML, PDF, LaTeX und Folien für Präsentationen).
+
+Ein Jupyter Notebook besteht aus Zellen die entweder
+
+- Text in [Markdown-Schreibweise](https://www.ibm.com/docs/en/db2-event-store/2.0.0?topic=notebooks-markdown-jupyter-cheatsheet) oder
+- Programmcode (bei uns Python)
+
+enthalten können. Textzellen lassen sich mit einem Doppelklick bearbeiten, mit `Shift + Enter` schließen Sie die Bearbeitung ab.
+
+

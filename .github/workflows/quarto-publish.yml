@@ -36,6 +36,8 @@ jobs:
         run: quarto render skript-python
       - name: Prepare notebooks
         run: julia prepare-zipfile.jl julia python
+      - name: List content
+        run: find .
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

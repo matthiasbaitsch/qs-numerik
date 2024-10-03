@@ -10,10 +10,6 @@ book:
   author: "Matthias Baitsch"
   chapters:
     - index.qmd
-    - 01-python.qmd
-    - 02-numpy.qmd
-    - 03-matplotlib.qmd
-    - 04-anfangswertprobleme.qmd
 downloads: 
     - pdf
 

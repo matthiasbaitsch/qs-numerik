@@ -5,9 +5,6 @@ for lang ∈ ARGS
     output_dir = "_build/$lang"
     ext = (lang == "julia" ? ".jl" : ".py")
 
-    # Remove output dir
-    rm(output_dir, recursive=true, force=true)
-
     # Create folders
     mkpath("$output_dir/zip")
 

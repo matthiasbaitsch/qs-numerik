@@ -3,9 +3,7 @@ title: Rechnen mit Vektoren und Matrizen
 engine: julia
 ---
 
-
 In numerischen Anwendungen sind Matrizen und Vektoren allgegenwärtig. In Julia sind die entsprechenden Datentypen und Operationen änlich wie in Matlab eingebaut. Allerdings müssen für bestimmte Aufgaben Pakete importiert werden.
-
 
 ## Grundlagen
 
@@ -17,20 +15,25 @@ Uns wird das in der Regel ausreichen aber prinzipiell kann man auch mit fünfdim
 Eine erste Möglichkeit Vektoren und Matrizen zu erzeugen besteht darin, die **Einträge direkt anzugeben**:
 
 ```{julia}
+#| echo: false
 u = [1 2 3]
-x = [5; 1; 9; 2]
-y = [1; 2; 1; 3]
+x = [5, 1, 9, 2]
+y = [1, 2, 1, 3]
 A = [1 2 3 4; 7 6 5 4; 6 4 6 4]
-B = [2 1; 5 6; 9 1];
+B = [2 1
+    5 6
+    9 1]
 ```
 
-Damit haben wir den Zeilenvektor u erzeugt (eine $1 \times 3$ Matrix)
+Bei einem Vektor werden die Einträge durch ein Komma getrennt. Bei einer Matrix stehen die Einträge einer Zeile  ohne Trennzeichen hintereinander. Zeilen können durch ein Semikolon oder einen Zeilenumbruch getrennt werden.
+
+Der Vektor `u` ist ein Zeilenvektor (eine $1 \times 3$ Matrix)
 
 ```{julia}
 u
 ```
 
-Demgegenüber entsprechen x und y den Vektoren, wie sie überlicherweise in der Mathematik verwendet werden:
+Demgegenüber entsprechen `x` und `y` den Vektoren, wie sie überlicherweise in der Mathematik verwendet werden:
 
 ```{julia}
 x
@@ -40,22 +43,23 @@ x
 y
 ```
 
-Bei A und B handelt es sich um "normale" Matrizen
+Bei `A` und `B` handelt es sich um "normale" Matrizen
 
 ```{julia}
 A
 ```
 
-Aufgabe
-
-- Wie funktioniert die Eingabe?
+```{julia}
+B
+```
 
 Weiterhin gibt es Funktionen, mit denen sich **spezielle Matrizen und Vektoren** anlegen lassen.
 
 ```{julia}
-println("    Nullvektor: ", zeros(3))
-println("    Nullmatrix: ", zeros(2, 3))
-println("    Einsmatrix: ", ones(4, 2))
+println("Nullvektor: ", zeros(3))
+println("Nullmatrix: ", zeros(2, 3))
+println("Einsmatrix: ", ones(4, 2))
+println("      Wert: ", fill(1.7, 2, 4))
 ```
 
 Auf die Einheitsmatrix werden wir später eingehen.
@@ -72,16 +76,131 @@ Es handelt sich wieder um ein spezielles Objekt für das die einzelnen Werte ers
 collect(x)
 ```
 
-### Eigenschaften von Arrays
+### Elemente in Vektoren einfügen
+
+Häufig ist es praktisch, einen Vektor Schritt für Schritt mit Inhalt zu füllen. Hierfür gibt es die Funktionen `push!` und `append!`.
+
+Wir beginnen mit einem leeren Vektor:
+
+```{julia}
+a = []
+```
+
+Mit `push!` wird ein einzelnes Element angehängt:
+
+```{julia}
+push!(a, 99)
+a
+```
+
+Mehrere Elemente aus einem anderen Vektor lassen sich mit `append!` hinzufügen:
+
+```{julia}
+append!(a, [7, 6, 5, 4])
+a
+```
+
+Sollen Elemente an erster Stelle eingefügt werden, geht das mit den Funktionen `pushfirst!` und `prepend!`. 
+
+Und auch hier wieder: Das Ausrufungszeichen am Ende der Funktion macht deutlich, dass ein Funktionsparameter verändert wird.
+
+### Verbinden
+
+Vektoren und Matrizen können mit `hcat` und `vcat` zusammengesetzt werden.
+
+```{julia}
+#| echo: false
+a = [1, 2, 3]
+b = [9, 4, 7]
+```
+
+Matrix mit den Spaltenvektoren $\mathbf{a}$ und $\mathbf{b}$:
+
+```{julia}
+hcat(a, b)
+```
+
+Die Matrix mit den Zeilenvektoren $\mathbf{a}$ und $\mathbf{b}$ entsteht, wenn die Transponierten der Vektoren untereinander angeordnet werden:
+
+```{julia}
+vcat(a', b')
+```
+
+Ein langer Vektor aus $\mathbf{a}$ und $\mathbf{b}$:
+
+```{julia}
+vcat(a, b)
+```
+
+Zwei Matrizen untereinander:
+
+```{julia}
+vcat([1 1 1; 2 2 2], [3 3 3; 4 4 4])
+```
+
+Eine alternative Möglichkeit Vektoren zu einer Matrix zu kombinieren ist `stack`. Diese Funktion hängt Vektoren aus einer Liste aneinander. Dabei gibt `dims` die Anordnung an (1 = untereinander, 2 = nebeneinander).
+
+```{julia}
+a = [1, 2, 3, 4]
+b = [6, 5, 4, 3]
+c = [9, 1, 8, 2]
+stack([a, b, c], dims=1)
+```
+
+```{julia}
+stack([a, b, c], dims=2)
+```
+
+### Einträge neu anordnen
+
+Manchmal ist es nützlich, die Einträge einer Matrix in einem Vektor anzuordnen und umgekehrt. Dies geht mit der Funktion `reshape`. Hier ein Beispiel:
+
+```{julia}
+A = [
+    1 4 7 10
+    2 5 8 11
+    3 6 9 12
+]
+
+x = reshape(A, :)
+x
+```
+
+Der erste Parameter von `reshape` ist das Ausgangsobjekt, danach kommt die Dimension des Zielobjekts. Wird hier nur ein Wert angegeben, ist das Ergebnis ein Vektor. Mit dem Doppelpunkt wird die Anzahl der Einträge automatisch festgelegt. Außerdem ist zu sehen, dass die Werte spaltenweise ausgelesen werden.
+
+Umgekehrt kann man aus dem Vektor auch wieder eine Matrix erzeugen:
+
+```{julia}
+B = reshape(x, 2, :)
+B
+```
+
+Interessanterweise verwenden die Objekte `A, B, x` alle denselben Speicherbereich für die Zahlenwerte:
+
+```{julia}
+x[2] = 999
+B
+```
+
+Wird `x` geändert dann wirkt sich das auch auf `B` aus. Häufig ist das erwünscht, man spart Speicher und Rechenzeit. Will man das neue Objekt jedoch unabhängig verändern, dann muss eine Kopie angefertigt werden:
+
+```{julia}
+C = copy(reshape(x, 3, :))
+x[3] = 777
+C
+```
+
+### Eigenschaften von Vektoren und Matrizen
 
 Die Eigenschaften eines Arrays lassen sich mit verschiedenen Funktionen abfragen.
 
 ```{julia}
-println("length(x) = ", length(x))
-println("ndims(A) = ", ndims(A))
-println("size(A) = ", size(A))
-println("size(A, 1) = ", size(A, 1))
-println("size(A, 2) = ", size(A, 2))
+println("  length(x) = ", length(x), " (Anzahl der Einträge in x)")
+println("   ndims(A) = ", ndims(A))
+println("    size(A) = ", size(A))
+println(" size(A, 1) = ", size(A, 1))
+println(" size(A, 2) = ", size(A, 2))
+println("  length(A) = ", length(A), " (Anzahl der Einträge in A)")
 ```
 
 ### Auf Einträge zugreifen
@@ -99,7 +218,7 @@ Mit `end` wird vom Ende des Arrays gezählt. Dabei liefert `end` das letzte Elem
 
 ```{julia}
 println("A = ", A)
-println("A[end, end-2] = ", A[end, end - 1])
+println("A[end, end-2] = ", A[end, end-1])
 ```
 
 Häufig möchte man in einem Rechenschritt auf mehrere Einträge eines Arrays gleichzeitig zugreifen. Hierfür gibt es zwei Möglichkeiten:
@@ -112,7 +231,7 @@ Häufig möchte man in einem Rechenschritt auf mehrere Einträge eines Arrays gl
 Die Schreibweisen `start:stop` oder `start:inc:stop` zur Erzeugung einer Sequenz von Zahlen haben wir bereits kennengelernt. Eine solche Sequenz kann zur Indizierung verwendet werden:
 
 ```{julia}
-y = [9; 3; 5; 1; 7; 4; 99];
+y = [9; 3; 5; 1; 7; 4; 99]
 println("y = ", y)
 println("y[2:4] = ", y[2:5])
 println("y[3:end] = ", y[3:end])
@@ -144,13 +263,32 @@ x[[1 3 7]] = [11 33 77]
 println("x = ", x)
 ```
 
+#### Boolsche Indizierung
+
+Wird ein Array mit Wahrheitswerten zur Indizierung verwendet, dann werden alle Werte herausgesucht, für die der Index wahr ist:
+
+```{julia}
+x = [6, 1, 9, 2, 4]
+x[[true, false, true, false, true]]
+```
+
+Manchmal ist das im Zusammenhang mit einer elementweisen Vergleichsoperation praktisch. Hier werden zum Beispiel alle Werte herausgesucht, die größer als 2 sind.
+
+```{julia}
+idx = x .> 2
+println("  idx  = ", idx)
+println("x[idx] = ", x[idx])
+```
+
+Wie immer dient der Punkt vor dem > - Zeichen dazu, eine Operation für mehrere Elemente eines Vektors oder eines Arrays auszuführen.
+
 ## Rechnen mit Matrizen und Vektoren
 
 In Julia ist es möglich, Rechnungen mit Matrizen und Vektoren sehr kompakt und fast wie auf dem Papier aufzuschreiben.
 
 ### Rechenoperation
 
-Die mathematischen Operatoren `+, -, *` sind fast so definiert, wie wir das aus der Mathematik kennen, wobei man für das Matrix-Vektor-Produkt $\mathbf{A}\mathbf{x}$ in Julia `A*x` schreibt.
+Die mathematischen Operatoren `+, -, *` sind so definiert, wie wir das aus der Mathematik kennen, wobei man für das Matrix-Vektor-Produkt $\mathbf{A}\mathbf{x}$ in Julia `A*x` schreibt.
 
 ```{julia}
 x = [5; 1; 6]
@@ -169,7 +307,7 @@ B = [1 1; 2 2; 3 3]
 ```
 
 ```{julia}
-x + 2*y
+x + 2 * y
 ```
 
 Eine Besonderheit in Julia ist, dass man das *-Zeichen zwischen einer Zahl und einer Variablen auch weglassen kann:
@@ -179,11 +317,11 @@ Eine Besonderheit in Julia ist, dass man das *-Zeichen zwischen einer Zahl und e
 ```
 
 ```{julia}
-A*x
+A * x
 ```
 
 ```{julia}
-A*B
+A * B
 ```
 
 Mit einem angehängten Apostroph `'` wird eine Matrix oder eines Vektors transponiert.
@@ -197,6 +335,33 @@ x'
 ```
 
 Dabei ist die Transponierte eines Vektors ein Zeilenvektor, also eine $1xn$-Matrix. Lassen Sie sich hier von dem Wort `adjoint` nicht abschrecken, für uns hat es keine tiefergehende Bedeutung.
+
+Wird ein Spaltenvektor mit einem Zeilenvektor multipliziert, dann entsteht eine Matrix, die dyadisches (oder äußeres) Produkt der Vektoren genannt wird. Das Beispiel
+
+$$
+\begin{pmatrix} 1 \\ 2 \\ 3 \end{pmatrix}(5 \; 3 \; 7 \; 8)
+=
+\begin{pmatrix}
+  5 & 3 & 7  & 8 \\
+ 10 & 6 & 14 & 16 \\
+ 15 & 9 & 21 & 24
+\end{pmatrix}
+$$
+
+wird in Julia mit
+
+```{julia}
+x = [1, 2, 3]
+y = [5 3 7 8]
+
+x * y
+```
+
+berechnet (beachten Sie, dass in `y` keine Kommas stehen, das ist also ein Zeilenvektor). Das dyadische Produkt von $\mathbf{x}$ mit sich selber erhalten wir mit
+
+```{julia}
+x * x'
+```
 
 ### Elementweise Operationen
 
@@ -214,6 +379,16 @@ Das Prinzip funktioniert auch wenn beide Operanden Arrays sind, zum Beispiel fü
 
 ```{julia}
 x .* y
+```
+
+Für eine Matrix und einen Vektor werden elementweise Operationen spaltenweise ausgeführt:
+
+```{julia}
+A = [1 2 3 4
+    5 6 7 9]
+x = [2, 4]
+
+A .* x
 ```
 
 ### Lineare Algebra
@@ -257,7 +432,7 @@ println("Natürlich gilt u ⋅ w = ", u ⋅ w, " und v ⋅ w = ", v ⋅ w)
 Lineare Gleichungssysteme lassen sich mit dem `\` - Operator lösen.
 
 ```{julia}
-A = [5  2; 6 1]
+A = [5 2; 6 1]
 b = [5; 2]
 x = A \ b
 ```
@@ -285,7 +460,7 @@ und die Schreibweise damit durchaus sinnvoll. Mit $\mathbf{I}$ ist die Einheitsm
 Zum Schluss noch die obligatorische Kontrolle
 
 ```{julia}
-A*x - b
+A * x - b
 ```
 
 Für die Einheitsmatrix 
@@ -324,6 +499,47 @@ println("Speicher für Vektor mit   3 Elementen: ", Base.summarysize([1.0, 2.0, 
 println("Speicher für Vektor mit   4 Elementen: ", Base.summarysize([1.0, 2.0, 3.0, 4.0]))
 ```
 
-Die Nullen werden also gar nicht gespeichert. Wie funktioniert das? In Julia können Funktionen und Operatoren unterschiedlich für verschiedene Datentypen implementiert werden. Es gibt also eine spezielle Version von `*` für die Einheitsmatrix und einen Vektor, der einfach den Vektor zurückliefert. Das ist eine sehr schöne Anwendung eines der fundamentalen Konzepte von Julia, dem _Multiple Dispatch_. Ein Vortrag zum Thema gibt es hier https://youtu.be/kc9HwsxE1OY, Stefan Karpinski ist einer der Autoren von Julia, dementsprechend ist er ziemlich begeistert von der Sache. Trotzdem intressant.
+Die Nullen werden also gar nicht gespeichert. Wie funktioniert das? In Julia können Funktionen und Operatoren unterschiedlich für verschiedene Datentypen implementiert werden. Es gibt also eine spezielle Version von `*` für die Einheitsmatrix und einen Vektor, der einfach den Vektor zurückliefert. Das ist eine sehr schöne Anwendung eines der fundamentalen Konzepte von Julia, dem _Multiple Dispatch_. Ein Vortrag zum Thema gibt es unter https://youtu.be/kc9HwsxE1OY, Stefan Karpinski ist einer der Autoren von Julia, dementsprechend ist er ziemlich begeistert von der Sache. Trotzdem intressant.
 
+### Weitere Funktionen
 
+Auswahl arithmetischer Funktionen:
+
+```{julia}
+x = [5, 4, 1, -6, 10]
+A = [-3 3 9; 4 3 -2]
+
+println("     |x| = ", norm(x))
+println(" min{xi} = ", minimum(x))
+println("max{Aij} = ", maximum(A))
+println("max{Ai_} = ", maximum(A, dims=1), "  (größter Wert aus jeder Spalte)")
+println("max{A_i} = ", maximum(A, dims=2), " (größter Wert aus jeder Zeile)")
+println("     Σxi = ", sum(x))
+println("    ΠAij = ", prod(A))
+```
+
+Die Functionen `eachcol` und `eachrow` geben eine List der Spalten- bzw. Zeilenvektoren zurück:
+
+```{julia}
+A = [1 2 3 4; 8 7 6 5; 9 1 8 2]
+
+eachrow(A)
+```
+
+Damit kann man dann zum Beispiel die Zeilensummennorm
+
+$$
+\| A \|_\infty =  \max_{i=1, \ldots ,m}{\sum_{j=1}^n | a_{ij} |}
+$$
+
+berechnet werden:
+
+```{julia}
+maximum(sum.(eachrow(abs.(A))))
+```
+
+Natürlich gibt es dafür auch eine eingebaute Funktion:
+
+```{julia}
+opnorm(A, Inf)
+```

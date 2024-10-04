@@ -4,15 +4,14 @@ engine: julia
 ---
 
 
-Mit dem [Plots-Paket](https://docs.juliaplots.org/stable) lassen sich eine Vielzahl verschiedener Plots erstellen, [hier](https://docs.juliaplots.org/stable/gallery/gr/) eine Sammlung von Beispielen. 
+Mit dem [Makie-Paket](https://docs.makie.org/stable) lassen sich eine Vielzahl verschiedener Plots erstellen, [hier](https://beautiful.makie.org/dev/) eine Sammlung von Beispielen. 
 
-Vor der ersten Benutzung müssen die Pakete `Plots` und `Conda` installiert werden. Das geht zum Beispiel so:
+Vor der ersten Benutzung muss das Paket `CairoMakie` installiert werden:
 
 ```{julia}
 #| output: false
 using Pkg
-Pkg.add("Plots")
-Pkg.add("Conda")
+Pkg.add("CairoMakie")
 ```
 
 Die Installation dauert leider recht lange, also Geduld. Sie können die Anweisungen oben nach erfolgreicher Installation gleich wieder löschen, das ist nur ein Mal notwendig.
@@ -21,77 +20,169 @@ Die Installation dauert leider recht lange, also Geduld. Sie können die Anweisu
 Wie immer muss die Bibliothek importiert werden (kann wieder etwas dauern).
 
 ```{julia}
-using Plots
+using CairoMakie
+using Makie.GeometryBasics
 ```
 
 ## Linienplots
 
-Linienplots erstellt man mit der Funktion `plot`, im einfachsten Fall werden zwei Arrays übergeben, in denen $x$-Koordinaten und $y$-Koordinaten stehen. Die `plot`-Funktion verbindet diese Punkte, so dass ein Polygonzug entsteht. 
+Linienplots erstellt man mit der Funktion `lines`, im einfachsten Fall werden zwei Arrays übergeben, in denen $x$-Koordinaten und $y$-Koordinaten stehen. Die `lines`-Funktion verbindet diese Punkte, so dass ein Polygonzug entsteht. 
 
 ```{julia}
-plot([0, 3, 3, 2, 1], [0, 0, 2, 2, 1])
+lines([0, 3, 3, 2, 1], [0, 0, 2, 2, 1])
 ```
 
-Die `plot`-Funktion akzeptiert auch Funktionen als Parameter, typischerweise werden zusätzlich noch die Grenzen des Plotbereichs übergeben.
+Alternativ lassen sich die Punkte auch in einer Matrix übergeben:
 
 ```{julia}
-plot(sin, 0, 2π)
+pts = [0 3 3 2 1; 0 0 2 2 1]
+lines(pts)
 ```
 
-Das funktioniert auch für selbstdefinierte Funktionen
+Die `lines`-Funktion akzeptiert auch Funktionen als zweiten Parameter, der erste Parameter ist dann das Intervall auf dem geplottet werden soll.
+
+```{julia}
+lines(0 .. 2pi, sin)
+```
+
+Das funktioniert auch für selbstdefinierte Funktionen.
 
 ```{julia}
 f(x) = sin(x^3)
-plot(f, 0, 5)
+lines(0 .. 5, f)
 ```
 
-Um mehrere Datensätze zu plotten werden die y-Werte in einem Array zusammengefasst.
+## Streuplots
+
+Punkte lassen sich mit `scatter` darstellen:
 
 ```{julia}
-x = 0:3
-y1 = [1, 0, 1, 0]
-y2 = [0, 1, 0, 1]
-plot(x, [y1, y2])
+x = range(0, 2π, 20)
+y = sin.(x)
+scatter(x, y)
 ```
 
-Mehrere Funktionen werden auch wieder in einem Array übergeben:
+Alternativ lassen sich die Koordinaten in einer Matrix zusammenfassen und in einem Rutsch übergeben.
 
 ```{julia}
-plot([sin, cos], 0, 2π)
+xy = stack([x, y], dims=1)
+scatter(xy)
 ```
 
-### Plots beschriften
+Es gibt eine große Auswahl an Möglichkeiten, den Plot zu verändern:
 
 ```{julia}
-plot(
-    [sin, cos, tan], 
-    0, 2π, 
-    title = "Trigonometrische Funktionen", 
-    labels = ["Sinus" "Kosinus" "Tangens"],
-    xlabel = "x", ylabel = "y", 
-    xticks = (0:π:2π, ["0", "\\pi", "2\\pi"]),
-    yrange = [-2, 2],
-    yticks = [-1, 0, 1]
-)
+scatter(x, y, marker=:star5, markersize=25, color=:hotpink, strokewidth=2, strokecolor=:chartreuse3)
 ```
 
-Plots lassen sich auch Schritt für Schritt erzeugen, dazu wird nach dem ersten plot die Funktion `plot!` verwendet.
+Mehr Informationen finden Sie in der [Dokumentation von Makie](https://docs.makie.org/stable/reference/plots/scatter) und zu den [Farben](https://juliagraphics.github.io/Colors.jl/stable/namedcolors).
+
+## Mehrere Plots kombinieren
+
+Um die Polygonzüge für
 
 ```{julia}
-plot(sin, 0, 2π)
-plot!(cos, 0, 2π)
-plot!(title = "Trigonometrische Funktionen")
+x = [2, 3, 5, 8]
+y1 = [1, 0, 1, 0.5]
+y2 = [2, 1, 2, 0.5]
 ```
 
-### In einer Schleife plotten
-
-Sollen plots in einer Schleife erzeugt werden, dann geht das wie erwartet mit `plot!`. Allerdings muss am Ende noch dazu gesagt werden, dass der Plot angezeigt werden soll.
+zu plotten, kann man folgendermaßen vorgehen:
 
 ```{julia}
-plot(x -> -1 + x / π, 0, 2π)
-for i in 1:4
-    plot!(x -> sin(i * x), 0, 2π, label = "i = $i")
+p = lines(x, y1)
+lines!(x, y2)
+scatter!(x, y1)
+scatter!(x, y2)
+p
+```
+
+In der ersten Zeile wird der Plot mit `lines` erzeugt und in `p` gespeichert. Danach wird mit `lines!` in den bestehenden Plot hineingezeichnet und mit `p` der Plot abschließend dargestellt. Dabei macht das angehängte `!` deutlich, dass `lines!` etwas zu einem existierenden Plot hinzufügt.
+
+## Plots beschriften
+
+```{julia}
+p = lines(0 .. 4π, sin, label="sin(x)")
+lines!(0 .. 4π, cos, label="cos(x)")
+p.axis.title = "Trigonometrische Funktionen"
+p.axis.xlabel = "Horizontale Achse"
+p.axis.ylabel = "Vertikale Achse"
+axislegend()
+p
+```
+
+Mit `axislegend()` wird dafür gesorgt, dass die Beschriftung für die Funktionen angezeigt wird.
+
+## In einer Schleife plotten
+
+Es soll die Funktionenschar $f_n(x) = \sin(nx)$ für $n = 0, \dots, 5$ geplottet. Mithilfe von
+
+```{julia}
+function make_fn(n)
+    function fn(x)
+        return sin(n * x)
+    end
+    return fn
 end
-current()
 ```
+
+erzeugen wir die einzelnen Funktionen, die dann in einer Schleife geplottet werden.
+
+```{julia}
+fig = Figure()
+ax = Axis(fig[1, 1], title="Funktionenschar")
+for i in 0:5
+    lines!(0 .. 2π, make_fn(i), label="n = $i")
+end
+axislegend()
+fig
+```
+
+Hier sehen Sie eine Variante für die Kombination von Plots in der zuerst die Graphik und das Koordinatensystem erzeugt wird. In dieser Form finden Sie das auch in der Makie-Dokumentation.
+
+## Kreise und Rechtecke
+
+Kreise und Rechtecke lassen sich mit der `poly`-Funktion darstellen (hierfür muss das Modul `Makie.GeometryBasics` geladen werden). 
+
+```{julia}
+p = poly(Rect(0, 0, 2, 2), color=(:hotpink, 0.5), strokewidth=2)
+poly!(Circle(Point2f(1, 2), 1), color=(:orange, 0.5), alpha=0.2, strokewidth=2)
+poly!(Rect(1, 1, 4, 2), color=(:skyblue2, 0.5), strokewidth=2)
+poly!(Rect(3, 0, 2, 2), color=:transparent, strokewidth=2)
+p.axis.aspect = DataAspect()
+p
+```
+
+Beachten Sie:
+
+- Die Zahl hinter dem Namen der Farbe heißt alpha-Wert, er bestimmt die Transparenz (0 = durchsichtig, 1 = opak).
+
+- Die vorletzte Zeile sorgt dafür, dass beide Achsen denselben Skalierungsfaktor verwenden (Kreis als Kreis).
+
+## Polygonnetze und Farbskala
+
+In diesem Beispiel wird eine Liste von Polygonen erzeugt und anhand von Zahlenwerten eingefärbt.
+
+```{julia}
+ps = []
+
+push!(ps, Point2f[[0, 0], [2, 0], [0, 2]])
+push!(ps, Point2f[[1, 1], [2, 1], [1, 2], [0, 2]])
+push!(ps, Point2f[[1.5, 0], [2, 0], [2, 2], [1.5, 2]])
+
+fig = Figure()
+Axis(fig[1, 1])
+p = poly!(ps, color=[3, 1, 2], alpha=0.5, colormap=:hawaii, strokewidth=2)
+Colorbar(fig[1, 2], p)
+fig
+```
+
+- Der `poly!`-Funktion wird eine Liste von Punktlisten übergeben wobei eine Punktliste mit `Point2f[[x1, y1], [x2, y2], ..., [xn, yn]]` erzeugt wird. 
+
+- Das Schema, nach dem die Zahlenwerte einer Farbe zugeordnet werden heißt Colormap (hier `:hawaii`), die verschiedenen Möglichkeiten finden Sie in der [Dokumentation](https://docs.makie.org/v0.21/explanations/colors#colormaps).
+
+- Die Farbskala wird mit `Colorbar` in der zweiten Spalte des Layouts dargestellt.
+
+
+
 

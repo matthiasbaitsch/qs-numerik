@@ -4,14 +4,10 @@ jupyter: python3
 ---
 
 
-In numerischen Anwendungen sind Matrizen und Vektoren allgegenwärtig. In Python gibt es die Bibliothek NumPy, 
-die mit [`ndarray`](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html)
+In numerischen Anwendungen sind Matrizen und Vektoren allgegenwärtig. In Python gibt es die Bibliothek NumPy, die mit [`ndarray`](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html)
 einen entsprechenden Datentyp und zugehörige Rechenoperationen zur Verfügung stellt.
 
-Wie immer in Python müssen wir die Bibliothek zunächst importieren. Es sich eingebürgert, dass Funktionen aus NumPy über das
-Kürzel `np` aufgerufen werden, wir werden uns (etwas widerwillig) an diese Konvention halten. Daher beginnt ein Jupyter Notebook 
-oder eine Python - Datei, in denen NumPy verwendet werden soll, immer mit der Anweisung
-
+Wie immer in Python müssen wir die Bibliothek zunächst importieren. Es sich eingebürgert, dass Funktionen aus NumPy über das Kürzel `np` aufgerufen werden, wir werden uns (etwas widerwillig) an diese Konvention halten. Daher beginnt ein Jupyter Notebook oder eine Python - Datei, in denen NumPy verwendet werden soll, fast immer mit der Anweisung
 
 ```{python}
 import numpy as np
@@ -19,8 +15,7 @@ import numpy as np
 
 ## Grundlagen
 
-In NumPy sind Vektoren und Matrizen Spezialfälle von $n$-dimensionalen Arrays (daher der Name `ndarray`), für einen Vektor gilt $n = 1$ und für eine Matrix $n = 2$.
-Uns wird das in der Regel ausreichen, aber prinzipiell kann man auch mit fünfdimensionalen Arrays rechnen.
+In NumPy sind Vektoren und Matrizen Spezialfälle von $n$-dimensionalen Arrays (daher der Name `ndarray`), für einen Vektor gilt $n = 1$ und für eine Matrix $n = 2$. Uns wird das in der Regel ausreichen, aber prinzipiell kann man auch mit fünfdimensionalen Arrays arbeiten.
 
 ### Erzeugen
 
@@ -38,7 +33,7 @@ print('A =', A)
 print('B =', B)
 ```
 
-Der Inhalt der Arrays (dieses Wort verwenden wir als Oberbegriff) wird also in Listen angegeben, wobei für eine Matrix eine Liste von Listen verwendet wird.
+Der Inhalt der Arrays (dieses Wort verwenden wir als Oberbegriff für Vektoren und Matrizen) wird also in Listen angegeben, wobei für eine Matrix eine Liste von Listen verwendet wird.
 
 Weiterhin gibt es Funktionen, mit denen sich **spezielle Matrizen und Vektoren** anlegen lassen.
 
@@ -56,6 +51,109 @@ z = np.linspace(1.1, 2.1, 11)
 print('z=', z)
 ```
 
+### Vektoren und Matrizen kombinieren
+
+```{python}
+a = np.array([1, 2, 3])
+b = np.array([9, 4, 7])
+```
+
+Um Vektoren in einer Matrix anzuordnen gibt es in numpy die Funktion `np.stack`. Hier wird eine Matrix mit `a` und `b` als Zeilenvektoren
+
+```{python}
+np.stack((a, b), axis=0)
+```
+
+erzeugt und hier mit Spaltenvektoren:
+
+```{python}
+np.stack((a, b), axis=1)
+```
+
+Der Parameter `axis` gibt also die Anordnung an (0 = untereinander, 1 = nebeneinander).
+
+Um Dinge zu verketten wird im Englischen das Wort concatenate verwendet und das ist auch der Name der entsprechenden numpy-Funktion. Hier werden die beiden Vektoren `a` und `b` zu einem langen Vektor verbunden:
+
+```{python}
+np.concatenate((a, b))
+```
+
+Das Funktioniert auch mit Matrizen.
+
+```{python}
+A = np.array([[1, 2], [2, 1], [3, 3]])
+B = np.array([[5, 6], [8, 7], [1, 4]])
+```
+
+Einmal untereinander
+
+```{python}
+np.concatenate((A, B), axis=0)
+```
+
+und einmal hintereinander
+
+```{python}
+np.concatenate((A, B), axis=1)
+```
+
+### Einträge neu anordnen
+
+Manchmal ist es nützlich, die Einträge einer Matrix in einem Vektor anzuordnen und umgekehrt. Dies geht mit der Funktion `np.reshape`. 
+
+```{python}
+A = np.array([
+    [1, 4, 7, 10],
+    [2, 5, 8, 11],
+    [3, 6, 9, 12]
+])
+```
+
+Hier werden die Einträge von `A` in einem Vektor angeordnet.
+
+```{python}
+x = np.reshape(A, 12)
+x
+```
+
+Da es sich bei `A` um eine $3 \times 4$-Matrix handelt hat der Vektor die länge 12. Offensichtlich werden die Einträge der Matrix zeilenweise ausgelesen. Mit
+
+```{python}
+x = np.reshape(A, 12, order='F')
+x
+```
+
+geschieht das Spaltenweise (F steht für Fortran, eine Programmiersprache mit spaltenweiser Anordnung). Anstatt der Anzahl der Einträge kann man auch `-1` angeben, dann wird der Wert automatisch ermittelt:
+
+```{python}
+x = np.reshape(A, -1, order='F')
+x
+```
+
+Der erste Parameter von `reshape` ist das Ausgangsobjekt, danach kommt die Dimension des Zielobjekts. Wird hier nur ein Wert angegeben, ist das Ergebnis ein Vektor. Mit dem Doppelpunkt wird die Anzahl der Einträge automatisch festgelegt. Außerdem ist zu sehen, dass die Werte spaltenweise ausgelesen werden.
+
+Umgekehrt kann man aus dem Vektor auch wieder eine Matrix erzeugen:
+
+```{python}
+B = np.reshape(x, (2, -1))
+B
+```
+
+Interessanterweise verwenden die Objekte `A, B, x` alle denselben Speicherbereich für die Zahlenwerte:
+
+```{python}
+x[2] = 999
+B
+```
+
+Wird `x` geändert dann wirkt sich das auch auf `B` aus. Häufig ist das erwünscht, man spart Speicher und Rechenzeit. Will man das neue Objekt jedoch unabhängig verändern, dann muss eine Kopie angefertigt werden:
+
+```{python}
+C = np.copy(np.reshape(x, (3, -1)))
+x[3] = 777
+C
+```
+
 ### Eigenschaften von Arrays
 
 Ein `ndarray` - Objekt besitzt die Eigenschaft `shape`, in der die Dimensionen abgelegt sind. Hier für einen Vektor
@@ -70,10 +168,11 @@ und eine Matrix
 print('Die Matrix A hat', A.shape[0], 'Zeilen und', A.shape[1], 'Spalten')
 ```
 
+Ein numpy-Array hat eine feste Länge, es ist nicht möglich, Einträge anzuhängen.
+
 ### Auf Einträge zugreifen
 
-Um auf die Einträge von Arrays zuzugreifen verwendet man (wie auch bei Python-Listen) eckige Klammern `[]`, die Indizierung
-beginnt bei 0. Bei Matrizen werden Zeilen- und Spaltenindex durch ein Komma getrennt.
+Um auf die Einträge von Arrays zuzugreifen verwendet man (wie auch bei Python-Listen) eckige Klammern `[]`, die Indizierung beginnt bei 0. Bei Matrizen werden Zeilen- und Spaltenindex durch ein Komma getrennt.
 
 ```{python}
 A[1, 2] = 999
@@ -173,7 +272,6 @@ print("  idx  = ", idx)
 print("x[idx] = ", x[idx])
 ```
 
-
 ## Rechnen mit Matrizen und Vektoren
 
 Mit NumPy ist es möglich, Rechnungen mit Matrizen und Vektoren sehr kompakt und fast wie auf dem Papier aufzuschreiben. Allerdings muss man
@@ -184,6 +282,8 @@ bei der Bedeutung der Operatoren aufpassen.
 Die mathematischen Operatoren sind elementweise vereinbart. Hier am Beispiel von Vektoren
 
 ```{python}
+x = np.array([1, 2, 3, 4])
+y = np.array([7, 1, 2, 9])
 print('x =', x, ', y =', y)
 print('x + y =', x + y)
 print('x * y =', x * y)
@@ -221,8 +321,7 @@ print('x.y =', np.dot(x, y))
 print('x.y =', x.dot(y))
 ```
 
-Für Vektoren mit zwei oder drei Komponenten wird das **Kreuzprodukt** mit der Funktion `cross` berechnet. Für Vektoren mit zwei Komponenten
-ist das Ergebnis eine Zahl (die dritte Komponente des Ergebnisvektors), sonst wieder ein Vektor mit zwei Komponenten. 
+Für Vektoren mit zwei oder drei Komponenten wird das **Kreuzprodukt** mit der Funktion `cross` berechnet. Für Vektoren mit zwei Komponenten ist das Ergebnis eine Zahl (die dritte Komponente des Ergebnisvektors), sonst wieder ein Vektor mit zwei Komponenten. 
 
 ```{python}
 u = np.array([3, 2, 1])
@@ -235,8 +334,7 @@ print('w = u x v =', w)
 print('Natürlich gilt: u.w =', u.dot(w), ', v.w =', v.dot(w))
 ```
 
-Sollen **Produkte** von **Matrizen und Matrizen** oder **Matrizen und Vektoren** berechnet werden, dann verwendet man den `@` - Operator. 
-Natürlich müssen dann wieder die Dimensionen der Operanden zusammenpassen.
+Sollen **Produkte** von **Matrizen und Matrizen** oder **Matrizen und Vektoren** berechnet werden, dann verwendet man den `@` - Operator. Natürlich müssen dann wieder die Dimensionen der Operanden zusammenpassen.
 
 ```{python}
 A = np.array([[6, 1, 9, 1], [3, 4, 1, 10]])
@@ -259,6 +357,29 @@ print('A^T =', A.T)
 print('A^TA =', A.T @ A)
 ```
 
+Wird ein Spaltenvektor mit einem Zeilenvektor multipliziert, dann entsteht eine Matrix, die dyadisches (oder äußeres) Produkt der Vektoren genannt wird. Das Beispiel
+
+$$
+\begin{pmatrix} 1 \\ 2 \\ 3 \end{pmatrix}(5 \; 3 \; 7 \; 8)
+=
+\begin{pmatrix}
+  5 & 3 & 7  & 8 \\
+ 10 & 6 & 14 & 16 \\
+ 15 & 9 & 21 & 24
+\end{pmatrix}
+$$
+
+wird in Python mit
+
+```{python}
+x = np.array([1, 2, 3])
+y = np.array([5, 3, 7, 8])
+
+np.outer(x, y)
+```
+
+berechnet.
+
 Zur Lösung linearer Gleichungssysteme gibt es die Funktion `solve` aus dem `linalg` - Paket von NumPy.
 
 ```{python}
@@ -268,6 +389,45 @@ x = np.linalg.solve(A, b)
 
 print('Lösung x =', x)
 print('Zur Kontrolle: ', A @ x - b)
+```
+
+### Weitere Funktionen
+
+Auswahl arithmetischer Funktionen:
+
+```{python}
+x = np.array([5, 4, 1, -6, 10])
+A = np.array([[-3, 3, 9], [4, 3, -2]])
+
+print("     |x| = ", np.linalg.norm(x))
+print(" min{xi} = ", np.min(x))
+print("max{Aij} = ", np.max(A))
+print("max{Ai_} = ", np.max(A, axis=0), "  (größter Wert aus jeder Spalte)")
+print("max{A_i} = ", np.max(A, axis=1), " (größter Wert aus jeder Zeile)")
+print("     Σxi = ", np.sum(x))
+print("    ΠAij = ", np.prod(A))
+```
+
+Manchmal möchte man eine Funktion auf Zeilen oder Spalten anwenden. Das geht mit `np.apply_along_axis`. Hier wird zum Beispiel jede Spalte einer Matrix ausgegeben:
+
+```{python}
+A = np.array([
+    [1, 2, 3, 4], 
+    [8, 7, 6, 5], 
+    [9, 1, 8, 2]])
+np.apply_along_axis(print, axis=0, arr=A)
+```
+
+Damit kann man dann zum Beispiel die Zeilensummennorm
+
+$$
+\| A \|_\infty =  \max_{i=1, \ldots ,m}{\sum_{j=1}^n | a_{ij} |}
+$$
+
+berechnet werden:
+
+```{python}
+np.max(np.apply_along_axis(sum, axis=1, arr=np.abs(A)))
 ```
 
 ### Exotische Operationen

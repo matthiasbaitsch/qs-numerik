@@ -3,12 +3,11 @@ title: Rechnen mit Vektoren und Matrizen
 engine: julia
 ---
 
-In numerischen Anwendungen sind Matrizen und Vektoren allgegenwärtig. In Julia sind die entsprechenden Datentypen und Operationen änlich wie in Matlab eingebaut. Allerdings müssen für bestimmte Aufgaben Pakete importiert werden.
+In numerischen Anwendungen sind Matrizen und Vektoren allgegenwärtig. In Julia sind die entsprechenden Datentypen und Operationen, so etwa in Matlab, eingebaut. Allerdings müssen für bestimmte Aufgaben weitere Pakete importiert werden.
 
 ## Grundlagen
 
-In Julia sind Vektoren und Matrizen Spezialfälle von $n$-dimensionalen Arrays für einen Vektor gilt $n = 1$ und für eine Matrix $n = 2$.
-Uns wird das in der Regel ausreichen aber prinzipiell kann man auch mit fünfdimensionalen Arrays rechnen.
+In Julia sind Vektoren und Matrizen Spezialfälle von $n$-dimensionalen Arrays für einen Vektor gilt $n = 1$ und für eine Matrix $n = 2$. Uns wird das in der Regel ausreichen aber prinzipiell kann man auch mit fünfdimensionalen Arrays rechnen.
 
 ### Erzeugen
 
@@ -106,7 +105,7 @@ Sollen Elemente an erster Stelle eingefügt werden, geht das mit den Funktionen 
 
 Und auch hier wieder: Das Ausrufungszeichen am Ende der Funktion macht deutlich, dass ein Funktionsparameter verändert wird.
 
-### Verbinden
+### Vektoren und Matrizen kombinieren
 
 Vektoren und Matrizen können mit `hcat` und `vcat` zusammengesetzt werden.
 

@@ -99,7 +99,9 @@ print(h.index(e))
 Wir halten fest:
 
 - Die Multiplikation einer Liste mit einer ganzen Zahl bewirkt, dass die Liste mehrfach hintereinander kopiert wird
+
 - Mit dem `+` - Operator können mehrere Listen zu einer neuen Liste verbunden werden
+
 - Mit der Methode `index` kann nach der Position eines Elements in der Liste gesucht werden. Ist das gesuchte Element mehrfach vertreten, wird die erste Position zurück gegeben, ist das Element nicht in der Liste enthalten bricht das Programm mit einer Fehlermeldung ab
 
 ### Ranges
@@ -203,6 +205,12 @@ else:
     print('Kein Schaltjahr:', y)
 ```
 
+Manchmal möchte man prüfen, ob ein Objekt in einem anderen vorkommt oder enthalten ist. Hierfür wird wieder `in` verwendet werden. Hier ein Beispiel mit Zeichenketten:
+
+```{python}
+print('a' in 'Hallo')
+```
+
 ### Schleifen
 
 In einer ***`for` - Schleife*** nimmt eine Schleifenvariable nacheinander alle Werte eines listenartigen Objekts an (etwas vereinfacht gesagt).
@@ -218,8 +226,7 @@ for o in list:
 
 Sie sehen wieder die von der Alternative schon bekannte Kombination von Doppelpunkt und Einrückung!
 
-Manchmal ist es wichtig zu wissen, an welcher Position ein Element der Liste steht. In diesem Fall verwendet man eine 
-Zählvariable (in der Regel `i`, `j` oder `k`) in Kombination mit der `range` - Funktion und häufig auch `len`.
+Manchmal ist es wichtig zu wissen, an welcher Position ein Element der Liste steht. In diesem Fall verwendet man eine Zählvariable (in der Regel `i`, `j` oder `k`) in Kombination mit der `range` - Funktion und häufig auch `len`.
 
 ```{python}
 for i in range(0, len(list)):
@@ -344,8 +351,7 @@ $$
     f_1(x) = (1 - x) ^ 2 \quad \text{oder} \quad f_5(x) = (1 - x / 5)^2.
 $$
 
-In Python lässt sich das durch eine Funktion realisieren, die eine Funktion zurückliefert. Für unser Beispiel
-sieht das so aus:
+In Python lässt sich das durch eine Funktion realisieren, die eine Funktion zurückliefert. Für unser Beispiel sieht das so aus:
 
 ```{python}
 def make_fn(n):

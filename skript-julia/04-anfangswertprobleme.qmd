@@ -14,7 +14,7 @@ Pkg.add("DifferentialEquations")
 und dann zusammen mit `Plots` importiert
 
 ```{julia}
-using Plots
+using CairoMakie
 using DifferentialEquations
 ```
 
@@ -88,7 +88,7 @@ und die exakte Lösung zum Vergleich
 
 ```{julia}
 xr = LinRange(0, 1, 20)
-yr = exp.(xr.^2);
+yr = exp.(xr .^ 2);
 ```
 
 ### Euler-Verfahren
@@ -104,7 +104,7 @@ berechnet. Hier die Umsetzung in Julia:
 ```{julia}
 function euler(F, I, y0, h)
     n = ceil(Int, (I[2] - I[1]) / h + 1)
-    x = I[1].+h*(0:n-1)
+    x = I[1] .+ h * (0:n-1)
     y = zeros(n)
     y[1] = y0
     for i ∈ 1:n-1
@@ -122,9 +122,11 @@ xe2, ye2 = euler(F, [0, 1], 1, 0.02);
 ```
 
 ```{julia}
-plot(xr, yr, linewidth=3, label = "Exakt", legend=:topleft)
-plot!(xe1, ye1, markershape=:circle, markersize=3, label="Euler h = 0.2")
-plot!(xe2, ye2, markershape=:circle, markersize=3, label = "Euler h = 0.02")
+p = scatterlines(xr, yr, linewidth=3, label="Exakt")
+scatterlines!(xe1, ye1, label="Euler h = 0.2")
+scatterlines!(xe2, ye2, label="Euler h = 0.02")
+axislegend()
+p
 ```
 
 ### Näherungsverfahren in DifferentialEquations
@@ -137,9 +139,13 @@ F(y, p, x) = 2 * x * y;
 p = ODEProblem(F, 1, [0, 1]);
 s = solve(p);
 
-plot(xr, yr, linewidth=5, label="Exakt")
-plot!(s, color=:red, label="Näherung")
+p = lines(xr, yr, linewidth=3, label="Exakt")
+lines!(s, color=:red, label="Näherung")
+axislegend()
+p
 ```
+
+Der Fehler ist so klein, dass mit dem bloßen Auge kein unterschied zu erkennen ist.
 
 ## Systeme von Differentialgleichungen
 
@@ -172,10 +178,10 @@ Damit können wir das Anfangswertproblem für gegebene Werte $a, b, c$ und eine 
 ```{julia}
 # Funktion der DGL
 F(y, p, t) = [
-        10 * (y[2] - y[1]),
-        y[1] * (28 - y[3]) - y[2],
-        y[1] * y[2] - 8 / 3 * y[3]
-    ]
+    10 * (y[2] - y[1]),
+    y[1] * (28 - y[3]) - y[2],
+    y[1] * y[2] - 8 / 3 * y[3]
+]
 
 # Anfangswert
 y0 = [10, 10, 10]
@@ -226,23 +232,10 @@ s = solve(p)
 
 # Ausgabe
 print("N = ", length(s))
-plot(s.t, s[1, :], markershape=:circle, markersize=3)
+scatterlines(s.t, s[1, :])
 ```
 
 Das Standardverfahren funktioniert hier sehr gut, das spricht für die Umsetzung im Paket `DifferentialEquations`. In Python und Matlab ist das leider nicht der Fall, die Funktion `solve_ivp` aus dem Python scipy Paket berechnet für diese Problem mehr als 1.5 Millionen Schritte, in Matlab sind es sogar mehr als 6 Millionen. 
-
-Es geht aber auch in Julia noch ein bisschen besser, und zwar wenn man dem Lösungsverfahren einen Tipp gibt und dazusagt, dass es sich um eine steife Differentialgleichung handelt.
-
-```{julia}
-# Näherungslösung
-s = solve(p, alg_hints=[:stiff])
-
-# Ausgabe
-print("N = ", length(s))
-plot(s.t, s[1, :], markershape=:circle, markersize=3)
-```
-
-Der Unterschied in Rechenzeit ist vernachlässigbar, es wird aber eine etwas geringere Anzahl von Schritten benötigt.
 
 Anmerkungen:
 

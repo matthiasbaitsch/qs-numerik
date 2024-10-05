@@ -516,7 +516,7 @@ Eine benanntes Tupel kann als Parameter an eine Funktion übergeben werden:
 ```{julia}
 volume(b) = b.length * b.width * b.height
 
-println("Volumen V = ", volume(b))
+println("Volumen V = ", volume(q))
 ```
 
 Eine Alternative besteht darin, das Paket `DotMaps` zu verwenden, mit dem wir die Werte schrittweise hinzufügen können. Das Paket muss einmal installiert werden
@@ -535,12 +535,12 @@ using DotMaps
 Anschließend können wir eine Variable vom Typ `DotMap` erzeugen und danach belegen.
 
 ```{julia}
-b = DotMap()
-b.length = 3
-b.width = 2.2
-b.height = 5.5
+q = DotMap()
+q.length = 3
+q.width = 2.2
+q.height = 5.5
 
-println("Volumen V = ", volume(b))
+println("Volumen V = ", volume(q))
 ```
 
 Kommen in einem Programm gleichartige Objekte häufig vor, dann ist es in der Regel einfacher, diese in einem Struct abzubilden.

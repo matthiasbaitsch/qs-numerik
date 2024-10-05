@@ -20,9 +20,11 @@ u = [1 2 3]
 x = [5, 1, 9, 2]
 y = [1, 2, 1, 3]
 A = [1 2 3 4; 7 6 5 4; 6 4 6 4]
-B = [2 1
+B = [
+    2 1
     5 6
-    9 1]
+    9 1
+]
 ```
 
 Bei einem Vektor werden die Einträge durch ein Komma getrennt. Bei einer Matrix stehen die Einträge einer Zeile  ohne Trennzeichen hintereinander. Zeilen können durch ein Semikolon oder einen Zeilenumbruch getrennt werden.
@@ -363,11 +365,45 @@ berechnet (beachten Sie, dass in `y` keine Kommas stehen, das ist also ein Zeile
 x * x'
 ```
 
+### Schleifen
+
+Die Laufvariable einer `for`-Schleife kann entweder direkt über die Einträge laufen
+
+```{julia}
+x = [1, 2, 3, 4]
+A = [5 4 3 2; 1 9 3 2]
+
+for v in x
+    print(v, " ")
+end
+println()
+for v in A
+    print(v, " ")
+end
+println()
+```
+
+oder man verwendet eine Zählvariable
+
+```{julia}
+for i = 1:length(x)
+    print(x[i], " ")
+end
+println()
+for i = 1:size(A, 1), j = 1:size(A, 2)
+    print(A[i, j], " ")
+end
+println()
+```
+
+Beachten Sie bei der Matrix die Reihenfolge, in der die Elemente ausgegeben werden.
+
 ### Elementweise Operationen
 
 Manchmal möchte man Operationen elementweise anwenden, zum Beispiel zu jedem Eintrag des Vektors eine Zahl addieren oder für alle Einträge den Sinus berechnen. Hierzu wird in Julia (das ist durchgängig so) an die Funktion oder den Operator ein Punkt angehängt (in Matlab gibt es die Konvention auch, dort ist sie aber nicht durchgängig umgesetzt).
 
 ```{julia}
+x = [1, 2, 3, 4]
 x .+ 5
 ```
 
@@ -412,6 +448,8 @@ using LinearAlgebra
 Wir beginnen mit dem Skalarprodukt von zwei Vektoren. Das Skalarprodukt von zwei Vektor berechnet `dot` oder der `⋅` (Eingabe mit `\cdot`)
 
 ```{julia}
+x = [1, 2, 3]
+y = [3, 2, 1]
 println("x ⋅ y = ", x ⋅ y)
 println("dot(x, y) = ", dot(x, y))
 ```
@@ -419,8 +457,8 @@ println("dot(x, y) = ", dot(x, y))
 während es für das Kreuzprodukt kein eigenes Symbol gibt
 
 ```{julia}
-u = [3; 2; 1]
-v = [5; -1; 4]
+u = [3, 2, 1]
+v = [5, -1, 4]
 w = cross(u, v)
 
 println("u = ", u)

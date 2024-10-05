@@ -19,6 +19,9 @@ for lang ∈ ARGS
     end
     isdir("$input_dir/pics") && cp("$input_dir/pics", "$output_dir/zip/pics")
 
+    # Copy assignments
+    cp("aufgaben/aufgaben.ipynb", "_build")
+
     # Create zipfile
     cd("$output_dir/zip")
     run(`zip -r ../$lang-und-jupyter-notebooks.zip .`)

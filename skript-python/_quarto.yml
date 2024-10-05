@@ -12,8 +12,8 @@ book:
     - index.qmd
     - 00-jupyter.qmd
     - 01-python.qmd
-    - 02-numpy.qmd
-    - 03-matplotlib.qmd
+    - 02-vektoren-und-matrizen.qmd
+    - 03-plotten.qmd
     - 04-anfangswertprobleme.qmd
 downloads: 
     - pdf

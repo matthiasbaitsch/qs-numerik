@@ -273,11 +273,11 @@ eingerückt die Anweisungen im Rumpf der Funktion. Das berechnete Ergebnis wird 
 
 Sollen Funktionen in mehreren Jupyter Notebooks verwendet werden, dann kann man sie in eine eigene Python-Datei auslagern. Zum Beispiel enthält die (im selben 
 Ordner wie die Jupyter Notebooks) liegende Datei
-`number_functions.py` (Zip-Datei von Moodle herunterladen) Funktionen aus dem Bereich der Zahlentheorie. Um diese zu verwenden müssen sie zunächst importiert werden.
+`numberfunctions.py` (Zip-Datei von Moodle herunterladen) Funktionen aus dem Bereich der Zahlentheorie. Um diese zu verwenden müssen sie zunächst importiert werden.
 
 ```{python}
 # Importieren
-from number_functions import *
+from numberfunctions import *
 
 # Funktionen verwenden
 print("2 ist prim: ", is_prime(2))

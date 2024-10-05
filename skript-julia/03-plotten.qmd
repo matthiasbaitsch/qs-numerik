@@ -147,9 +147,9 @@ Kreise und Rechtecke lassen sich mit der `poly`-Funktion darstellen (hierfür mu
 
 ```{julia}
 p = poly(Rect(0, 0, 2, 2), color=(:hotpink, 0.5), strokewidth=2)
-poly!(Circle(Point2f(1, 2), 1), color=(:orange, 0.5), alpha=0.2, strokewidth=2)
 poly!(Rect(1, 1, 4, 2), color=(:skyblue2, 0.5), strokewidth=2)
 poly!(Rect(3, 0, 2, 2), color=:transparent, strokewidth=2)
+poly!(Circle(Point2f(1, 2), 1), color=(:orange, 0.5), alpha=0.2, strokewidth=2)
 p.axis.aspect = DataAspect()
 p
 ```

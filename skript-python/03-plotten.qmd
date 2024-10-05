@@ -92,6 +92,76 @@ Es gibt eine große Auswahl an Möglichkeiten, den Plot zu verändern:
 
 ```{python}
 plt.scatter(x, y, marker='*', s=200, c='hotpink', linewidths=1, edgecolors='green')
+plt.show()
 ```
 
 Mehr Informationen finden Sie in der [Dokumentation](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.scatter.html).
+
+## In einer Schleife plotten
+
+Es soll die Funktionenschar $f_n(x) = \sin(nx)$ für $n = 0, \dots, 5$ geplottet. Mithilfe von
+
+```{python}
+def make_fn(n):
+    def fn(x):
+        return np.sin(n * x)
+    return fn
+```
+
+erzeugen wir die einzelnen Funktionen, die dann in einer Schleife geplottet werden.
+
+```{python}
+x = np.linspace(0, 2*pi, 500)
+l = []
+for i in range(0, 6):
+    l.append(f"n = {i}")
+    y = make_fn(i)(x)
+    plt.plot(x, y)
+plt.legend(l)
+plt.show()
+```
+
+## Kreise und Rechtecke
+
+Kreise und Rechtecke lassen sich mit der `poly`-Funktion darstellen (hierfür muss das Modul `Makie.GeometryBasics` geladen werden). 
+
+```{python}
+import matplotlib.patches as pltp
+import matplotlib.collections as pltc
+
+patches = []
+patches.append(pltp.Rectangle([3, 0], 2, 2, color='white'))
+patches.append(pltp.Rectangle([0, 0], 2, 2, color='hotpink'))
+patches.append(pltp.Rectangle([1, 1], 4, 2, color='skyblue'))
+patches.append(pltp.Circle([1, 2], 1, color='orange'))
+
+pc = pltc.PatchCollection(patches, edgecolor='black', alpha=0.6, match_original=True)
+plt.gca().add_collection(pc)
+plt.axis('equal')
+plt.show()
+```
+
+Beachten Sie:
+
+- Die vorletzte Zeile sorgt dafür, dass beide Achsen denselben Skalierungsfaktor verwenden (Kreis als Kreis).
+
+## Polygonnetze und Farbskala
+
+In diesem Beispiel wird eine Liste von Polygonen erzeugt und anhand von Zahlenwerten eingefärbt.
+
+```{python}
+patches = []
+patches.append(pltp.Polygon([[0, 0], [2, 0], [0, 2]]))
+patches.append(pltp.Polygon([[1, 1], [2, 1], [1, 2], [0, 2]]))
+patches.append(pltp.Polygon([[1.5, 0], [2, 0], [2, 2], [1.5, 2]]))
+pc = pltc.PatchCollection(patches, alpha=0.5, edgecolor='black')
+plt.gca().add_collection(pc)
+pc.set_array([3,1,2])
+pc.set_cmap('inferno')
+plt.axis('equal')
+plt.colorbar(pc)
+plt.show()
+```
+
+- Das Schema, nach dem die Zahlenwerte einer Farbe zugeordnet werden heißt Colormap (hier `inferno`), die verschiedenen Möglichkeiten finden Sie in der [Dokumentation](https://matplotlib.org/stable/users/explain/colors/colormaps.html).
+

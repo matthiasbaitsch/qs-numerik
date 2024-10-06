@@ -20,7 +20,7 @@ for lang ∈ ARGS
     isdir("$input_dir/pics") && cp("$input_dir/pics", "$output_dir/zip/pics")
 
     # Copy assignments
-    cp("aufgaben/aufgaben.ipynb", "_build/aufgaben.ipynb")
+    cp("aufgaben/aufgaben.ipynb", "_build/aufgaben.ipynb", force=true)
 
     # Create zipfile
     cd("$output_dir/zip")

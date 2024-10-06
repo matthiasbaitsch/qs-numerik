@@ -4,7 +4,7 @@
 
     - [Quellcode](https://matthiasbaitsch.github.io/qs-numerik/julia/julia-und-jupyter-notebooks.zip)
 
-- [Skript Python](https://matthiasbaitsch.github.io/qs-numerik/julia/python)
+- [Skript Python](https://matthiasbaitsch.github.io/qs-numerik/python/skript)
 
     - [Quellcode](https://matthiasbaitsch.github.io/qs-numerik/python/python-und-jupyter-notebooks.zip)
 

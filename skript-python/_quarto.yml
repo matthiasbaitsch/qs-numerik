@@ -15,7 +15,7 @@ book:
     - 02-vektoren-und-matrizen.qmd
     - 03-plotten.qmd
     - 04-anfangswertprobleme.qmd
-downloads: 
+  downloads: 
     - pdf
 
 format:

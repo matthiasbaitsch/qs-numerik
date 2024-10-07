@@ -6,13 +6,13 @@ engine: julia
 
 ## Variablen, Operatoren und mathematische Funktionen
 
-Variablen enthalten Werte, im Beispiel unten eine Zeichenkette, eine Fließkommazahl und eine ganze Zahl. Die Ausgabe erfolgt mit der `print` - Funktion.
+Variablen enthalten Werte, im Beispiel unten eine Zeichenkette, eine Fließkommazahl und eine ganze Zahl. Die Ausgabe erfolgt mit der `println` - Funktion.
 
 ```{julia}
 a = "Hallo"
 x = 3.1
 y = 42
-print(" a = ", a, ", x = ", x, ", y = ", y)
+println(" a = ", a, ", x = ", x, ", y = ", y)
 ```
 
 Für numerische Argumente haben die Operatoren `+`, `-`, `*`, `/` die üblichen Bedeutungen. Zusätzlich gibt es 
@@ -522,6 +522,7 @@ println("Volumen V = ", volume(q))
 Eine Alternative besteht darin, das Paket `DotMaps` zu verwenden, mit dem wir die Werte schrittweise hinzufügen können. Das Paket muss einmal installiert werden
 
 ```{julia}
+#| echo: false
 using Pkg
 Pkg.add("DotMaps")
 ```

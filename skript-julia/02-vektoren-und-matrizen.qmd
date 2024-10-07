@@ -54,6 +54,8 @@ A
 B
 ```
 
+### Spezielle Matrizen und Vektoren
+
 Weiterhin gibt es Funktionen, mit denen sich **spezielle Matrizen und Vektoren** anlegen lassen.
 
 ```{julia}
@@ -76,6 +78,30 @@ Es handelt sich wieder um ein spezielles Objekt für das die einzelnen Werte ers
 ```{julia}
 collect(x)
 ```
+
+Sollen Matrizen in einer Textausgabe mehrzeilig dargestellt werden, geht das mit `display`:
+
+```{julia}
+println("x = ", x)
+print("A = ")
+display(A)
+print("B = ")
+display(B)
+```
+
+### Ausgabe
+
+Sollen Matrizen in einer Textausgabe mehrzeilig dargestellt werden, geht das mit `display`:
+
+```{julia}
+println("x = ", x)
+print("A = ")
+display(A)
+print("B = ")
+display(B)
+```
+
+Im Unterschied zu `println` fügt die `print`-Funktion keinen Zeilenumbruch ein.
 
 ### Elemente in Vektoren einfügen
 

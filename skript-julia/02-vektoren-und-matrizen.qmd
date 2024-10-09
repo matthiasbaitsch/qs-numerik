@@ -263,15 +263,30 @@ println("y[2:4] = ", y[2:5])
 println("y[3:end] = ", y[3:end])
 ```
 
-Offenbar kann man auch hier wieder `end` verwenden.
+Offenbar kann man auch hier wieder `end` verwenden. 
+
+Setzt man nur den Doppelpunkt ein, dann werden alle Einträge aus der entsprechenden Zeile oder Spalte selektiert.
+
+```{julia}
+A = [1 2 3 4 5; 5 6 7 8 9; 9 10 11 12 13]
+println("A =")
+display(A)
+
+println("Zweite Zeile: ", A[2, :])
+println("Dritte Spalte: ", A[:, 3])
+```
+
+Auf diese Weise lässt sich auch ein zusammenhängender Bereich auswählen:
+
+```{julia}
+println("A[1:2, 3:5] = ")
+display(A[1:2, 3:5])
+```
 
 Die Adressierung mit dem Doppelpunkt funktioniert auch bei Zuweisungen. Hier ein Beispiel:
 
 ```{julia}
-A = [1 2 3 4; 5 6 7 8; 9 10 11 12]
-println("A =")
-display(A)
-A[1:3, 3:4] = [11 22; 77 88; 99 11]
+A[1:3, 3:4] = [111 222; 777 888; 999 444]
 println("A =")
 display(A)
 ```
@@ -280,13 +295,21 @@ Wichtig dabei ist, dass die Dimensionen links und rechts vom Gleichheitszeichen 
 
 #### Index-Arrays
 
-Mithilfe von Index-Arrays lassen sich nicht-fortlaufende Bereiche adressieren
+Mithilfe von Index-Arrays lassen sich nicht-fortlaufende Bereiche adressieren. Das funktioniert für Vektoren
 
 ```{julia}
-x = [1 2 3 4 5 6 7]
+x = [8, 1, 9, 11, 3, 2, 8]
 println("x = ", x)
+println("x[3, 2, 1] = ", x[[3, 2, 1]])
 x[[1 3 7]] = [11 33 77]
 println("x = ", x)
+```
+
+und Matrizen
+
+```{julia}
+println("A[[3, 1], [5, 1, 2]] = ")
+display(A[[3, 1], [5, 1, 2]])
 ```
 
 #### Boolsche Indizierung

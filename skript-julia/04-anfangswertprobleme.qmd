@@ -1,6 +1,5 @@
 ---
 title: Numerische Lösung von Anfangswertproblemen
-engine: julia
 ---
 
 Anfangswertprobleme lassen sich in Julia mithilfe des `DifferentialEquations` Pakets lösen, das zunächst installiert

@@ -1,6 +1,5 @@
 ---
 title: Rechnen mit Vektoren und Matrizen
-engine: julia
 ---
 
 In numerischen Anwendungen sind Matrizen und Vektoren allgegenwärtig. In Julia sind die entsprechenden Datentypen und Operationen, so etwa in Matlab, eingebaut. Allerdings müssen für bestimmte Aufgaben weitere Pakete importiert werden.

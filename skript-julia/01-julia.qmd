@@ -26,7 +26,7 @@ println(7 ÷ 3)
 println(7 ^ 3)
 ```
 
-Es stehen die gängigen mathematischen Funktionen wie `sqrt`, `pow`, `sin`, `cos` sowie mathematische Konstanten, z.B. $\pi$ und $e$ zur Verfügung.
+Es stehen die gängigen mathematischen Funktionen wie `sqrt`, `exp`, `sin`, `cos` sowie mathematische Konstanten, z.B. $\pi$ und $e$ zur Verfügung.
 
 ```{julia}
 println("sqrt(4) = ", sqrt(4))

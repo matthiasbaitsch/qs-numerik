@@ -236,14 +236,16 @@ beginnt bei 1. Bei Matrizen werden Zeilen- und Spaltenindex durch ein Komma getr
 
 ```{julia}
 A[1, 2] = 999
-println("A = ", A)
+print("A = ")
+display(A)
 println("x[0] = ", x[2])
 ```
 
 Mit `end` wird vom Ende des Arrays gezählt. Dabei liefert `end` das letzte Element, `end - 1` das vorletzte, usw.
 
 ```{julia}
-println("A = ", A)
+print("A = ")
+display(A)
 println("A[end, end-2] = ", A[end, end-1])
 ```
 

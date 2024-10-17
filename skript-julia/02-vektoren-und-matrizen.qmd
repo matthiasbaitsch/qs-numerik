@@ -116,13 +116,13 @@ B = [7 2 1; 1 6 7; 9 9 9];
 
 (das Semikolon unterdrückt die Ausgabe).
 
-- Die Vektoren `a` und `b` in einem langen Vektor:
+Die Vektoren `a` und `b` in einem langen Vektor:
 
 ```{julia}
 [a; b]
 ```
 
-- Matrix mit den Spaltenvektoren `a` und `b`:
+Matrix mit den Spaltenvektoren `a` und `b`:
 
 ```{julia}
 [a b]

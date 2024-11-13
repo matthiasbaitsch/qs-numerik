@@ -165,3 +165,13 @@ plt.show()
 
 - Das Schema, nach dem die Zahlenwerte einer Farbe zugeordnet werden heißt Colormap (hier `inferno`), die verschiedenen Möglichkeiten finden Sie in der [Dokumentation](https://matplotlib.org/stable/users/explain/colors/colormaps.html).
 
+## Pfeile
+
+```{python}
+x = [1, 2, 3, 1, 2, 3]
+y = [0, 0, 0, 1, 1, 1]
+u = [1, 0, -4, 2, 0, -4]
+v = [3, 2, 1, -1, -2, -2]
+
+plt.quiver(x, y, u, v, color='green', width=0.005)
+```

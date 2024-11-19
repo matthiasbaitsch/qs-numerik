@@ -141,28 +141,6 @@ plt.axis('equal')
 plt.show()
 ```
 
-```{python}
-# patches = []
-# patches.append(pltp.Rectangle([3, 0], 2, 2, color='white'))
-# patches.append(pltp.Rectangle([0, 0], 2, 2, color='hotpink'))
-# patches.append(pltp.Rectangle([1, 1], 4, 2, color='skyblue'))
-# patches.append(pltp.Circle([1, 2], 1, color='orange'))
-
-# pc = pltc.PatchCollection(patches, edgecolor='black', alpha=0.6, match_original=True)
-# plt.gca().add_collection(pc)
-
-plt.figure()
-
-ax = plt.gca()
-ax.add_patch(plt.Rectangle([3, 0], 2, 2, edgecolor='black', facecolor='green', facealpha=0.5, lw=5))
-ax.add_patch(plt.Rectangle([0, 0], 2, 2, edgecolor='black', color='hotpink', alpha=0.5))
-
-plt.xlim(-0.5, 5.5)
-plt.ylim(-0.5, 3.5)
-plt.axis('equal')
-plt.show()
-```
-
 Beachten Sie:
 
 - Die vorletzte Zeile sorgt dafür, dass beide Achsen denselben Skalierungsfaktor verwenden (Kreis als Kreis).

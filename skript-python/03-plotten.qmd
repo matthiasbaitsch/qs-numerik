@@ -99,7 +99,7 @@ Mehr Informationen finden Sie in der [Dokumentation](https://matplotlib.org/stab
 
 ## In einer Schleife plotten
 
-Es soll die Funktionenschar $f_n(x) = \sin(nx)$ für $n = 0, \dots, 5$ geplottet. Mithilfe von
+Es soll die Funktionenschar $f_n(x) = \sin(nx)$ für $n = 0, \dots, 5$ geplottet werden. Mithilfe von
 
 ```{python}
 def make_fn(n):
@@ -108,7 +108,7 @@ def make_fn(n):
     return fn
 ```
 
-erzeugen wir die einzelnen Funktionen, die dann in einer Schleife geplottet werden.
+erzeugen wir die einzelnen Funktionen, die sich dann in einer Schleife plotten lassen.
 
 ```{python}
 x = np.linspace(0, 2*pi, 500)
@@ -141,6 +141,28 @@ plt.axis('equal')
 plt.show()
 ```
 
+```{python}
+# patches = []
+# patches.append(pltp.Rectangle([3, 0], 2, 2, color='white'))
+# patches.append(pltp.Rectangle([0, 0], 2, 2, color='hotpink'))
+# patches.append(pltp.Rectangle([1, 1], 4, 2, color='skyblue'))
+# patches.append(pltp.Circle([1, 2], 1, color='orange'))
+
+# pc = pltc.PatchCollection(patches, edgecolor='black', alpha=0.6, match_original=True)
+# plt.gca().add_collection(pc)
+
+plt.figure()
+
+ax = plt.gca()
+ax.add_patch(plt.Rectangle([3, 0], 2, 2, edgecolor='black', facecolor='green', facealpha=0.5, lw=5))
+ax.add_patch(plt.Rectangle([0, 0], 2, 2, edgecolor='black', color='hotpink', alpha=0.5))
+
+plt.xlim(-0.5, 5.5)
+plt.ylim(-0.5, 3.5)
+plt.axis('equal')
+plt.show()
+```
+
 Beachten Sie:
 
 - Die vorletzte Zeile sorgt dafür, dass beide Achsen denselben Skalierungsfaktor verwenden (Kreis als Kreis).
@@ -167,11 +189,31 @@ plt.show()
 
 ## Pfeile
 
-```{python}
-x = [1, 2, 3, 1, 2, 3]
-y = [0, 0, 0, 1, 1, 1]
-u = [1, 0, -4, 2, 0, -4]
-v = [3, 2, 1, -1, -2, -2]
+Pfeile zur Darstellung von Vektoren (zum Beispiel Kräften an Stabtragwerken) lassen sich mit `plt.quiver(x, y, u, v)` erzeugen. Dabei sind `x`, `y` die Koordinaten der Startpunkte und `u`, `v` die Komponenten der zu plottenden Vektoren.
 
-plt.quiver(x, y, u, v, color='green', width=0.005)
+```{python}
+x = np.array([1, 2, 3, 1, 2, 3])
+y = np.array([0, 0, 0, 1, 1, 1])
+u = np.array([10,  0, -40,  20, 0, -40])
+v = np.array([30, 20,  10, -10, 0, -20])
+
+fig, ax = plt.subplots(2, 2)
+ax[0, 0].quiver(x, y, u, v)
+ax[0, 0].set_title('Keine Skalierung')
+ax[0, 1].quiver(x, y, u, v, scale=300)
+ax[0, 1].set_title('scale=300')
+ax[1, 0].quiver(x, y, u, v, scale=150)
+ax[1, 0].set_title('scale=150')
+ax[1, 1].quiver(x, y, 10*u, 10*v, scale=1500, width=0.005, color='hotpink')
+ax[1, 1].set_title('10*u, 10*v, scale=1500')
+plt.subplots_adjust(wspace=0.3, hspace=0.5)
+plt.show()
 ```
+
+Funktionsweise:
+
+- Hat ein Vektor die Länge 0 wird er nicht dargestellt
+- Standardmäßig sind die Pfeillängen proportional zur Länge der Vektoren
+- Möchte man die Länge anpassen, muss der Skalierungsfaktor selber gewählt werden
+- Je größer der Wert von `scale` umso kürzer die Pfeile
+- Linienstärke und Farbe lassen sich mit `width` und `color` anpassen

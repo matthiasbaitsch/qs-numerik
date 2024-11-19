@@ -3,3 +3,6 @@ dist
 *.zip
 site_libs
 *copy.yml
+aufgaben/loesung-martin
+.jupyter
+*checkpoint*

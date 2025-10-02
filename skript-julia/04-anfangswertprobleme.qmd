@@ -13,6 +13,7 @@ Pkg.add("DifferentialEquations")
 und dann zusammen mit `Plots` importiert
 
 ```{julia}
+#| output: false
 using CairoMakie
 using DifferentialEquations
 ```

@@ -464,7 +464,7 @@ A .* x
 Funktionen aus dem Bereich der linearen Algebra, etwa zum Lösen linearer Gleichungssysteme, befinden sich im Paket `LinearAlgebra`, das zunächst installiert werden muss. Das geht beispielsweise so:
 
 ```{julia}
-#| echo: false
+#| output: false
 using Pkg
 Pkg.add("LinearAlgebra")
 ```
@@ -477,6 +477,8 @@ Um die entsprechenden Funktionen zu nutzen, wird zunächst das Paket importiert.
 using LinearAlgebra
 ```
 
+#### Skalar- und Kreuzprodukt
+
 Wir beginnen mit dem Skalarprodukt von zwei Vektoren. Das Skalarprodukt von zwei Vektor berechnet `dot` oder der `⋅` (Eingabe mit `\cdot`)
 
 ```{julia}
@@ -486,7 +488,7 @@ println("x ⋅ y = ", x ⋅ y)
 println("dot(x, y) = ", dot(x, y))
 ```
 
-während es für das Kreuzprodukt kein eigenes Symbol gibt
+Das Kreuzprodukt von zwei Vektoren wird mit `cross` berechnet, es gibt dafür kein eigenes Symbol.
 
 ```{julia}
 u = [3, 2, 1]
@@ -498,6 +500,10 @@ println("v = ", v)
 println("w = (u x v) = ", w)
 println("Natürlich gilt u ⋅ w = ", u ⋅ w, " und v ⋅ w = ", v ⋅ w)
 ```
+
+Denken Sie daran, dass das Kreuzprodukt nur für Vektoren mit drei Komponenten vereinbart ist.
+
+#### Lineare Gleichungssysteme
 
 Lineare Gleichungssysteme lassen sich mit dem `\` - Operator lösen.
 
@@ -532,6 +538,8 @@ Zum Schluss noch die obligatorische Kontrolle
 ```{julia}
 A * x - b
 ```
+
+#### Einheitsmatrix
 
 Für die Einheitsmatrix
 
@@ -571,7 +579,7 @@ println("Speicher für Vektor mit   4 Elementen: ", Base.summarysize([1.0, 2.0, 
 
 Die Nullen werden also gar nicht gespeichert. Wie funktioniert das? In Julia können Funktionen und Operatoren unterschiedlich für verschiedene Datentypen implementiert werden. Es gibt also eine spezielle Version von `*` für die Einheitsmatrix und einen Vektor, der einfach den Vektor zurückliefert. Das ist eine sehr schöne Anwendung eines der fundamentalen Konzepte von Julia, dem *Multiple Dispatch*. Ein Vortrag zum Thema gibt es unter https://youtu.be/kc9HwsxE1OY, Stefan Karpinski ist einer der Autoren von Julia, dementsprechend ist er ziemlich begeistert von der Sache. Trotzdem intressant.
 
-### Weitere Funktionen
+### Weitere Funktionen für Matrizen und Vektoren
 
 Auswahl arithmetischer Funktionen:
 
@@ -582,7 +590,7 @@ A = [-3 3 9; 4 3 -2]
 println("     |x| = ", norm(x))
 println(" min{xi} = ", minimum(x))
 println("max{Aij} = ", maximum(A))
-println("max{Ai_} = ", maximum(A, dims=1), "  (größter Wert aus jeder Spalte)")
+println("max{Ai_} = ", maximum(A, dims=1), " (größter Wert aus jeder Spalte)")
 println("max{A_i} = ", maximum(A, dims=2), " (größter Wert aus jeder Zeile)")
 println("     Σxi = ", sum(x))
 println("    ΠAij = ", prod(A))

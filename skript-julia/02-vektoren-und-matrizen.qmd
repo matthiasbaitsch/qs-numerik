@@ -461,17 +461,7 @@ A .* x
 
 ### Lineare Algebra
 
-Funktionen aus dem Bereich der linearen Algebra, etwa zum Lösen linearer Gleichungssysteme, befinden sich im Paket `LinearAlgebra`, das zunächst installiert werden muss. Das geht beispielsweise so:
-
-```{julia}
-#| output: false
-using Pkg
-Pkg.add("LinearAlgebra")
-```
-
-Nachdem das Paket installiert wurde können diese Zeilen gelöscht werden.
-
-Um die entsprechenden Funktionen zu nutzen, wird zunächst das Paket importiert.
+Funktionen aus dem Bereich der linearen Algebra, etwa zum Lösen linearer Gleichungssysteme, befinden sich im Paket `LinearAlgebra`. Um die entsprechenden Funktionen zu nutzen, wird zunächst das Paket importiert.
 
 ```{julia}
 using LinearAlgebra

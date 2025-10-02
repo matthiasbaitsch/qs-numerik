@@ -3,21 +3,7 @@ title: Plots erstellen
 ---
 
 
-Mit dem [Makie-Paket](https://docs.makie.org/stable) lassen sich eine Vielzahl verschiedener Plots erstellen, [hier](https://beautiful.makie.org/dev/) eine Sammlung von Beispielen. 
-
-Vor der ersten Benutzung muss das Paket `CairoMakie` installiert werden:
-
-```{julia}
-#| output: false
-using Pkg
-Pkg.add("Makie")
-Pkg.add("CairoMakie")
-```
-
-Die Installation dauert leider recht lange, also Geduld. Sie können die Anweisungen oben nach erfolgreicher Installation gleich wieder löschen, das ist nur ein Mal notwendig.
-
-
-Wie immer muss die Bibliothek importiert werden (kann wieder etwas dauern).
+Mit dem [Makie-Paket](https://docs.makie.org/stable) lassen sich eine Vielzahl verschiedener Plots erstellen, [hier](https://beautiful.makie.org/dev/) eine Sammlung von Beispielen. Hier werden die Bibliotheken geladen.
 
 ```{julia}
 using CairoMakie

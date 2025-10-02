@@ -6,3 +6,4 @@ site_libs
 aufgaben/loesung-martin
 .jupyter
 *checkpoint*
+skript-julia/Manifest.toml

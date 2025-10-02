@@ -2,23 +2,13 @@
 title: Numerische Lösung von Anfangswertproblemen
 ---
 
-Anfangswertprobleme lassen sich in Julia mithilfe des `DifferentialEquations` Pakets lösen, das zunächst installiert
-
-```{julia}
-#| output: false
-using Pkg
-Pkg.add("DifferentialEquations")
-```
-
-und dann zusammen mit `Plots` importiert
+Anfangswertprobleme lassen sich in Julia mithilfe des `DifferentialEquations` Pakets lösen, das hier zusammen mit der Plotbibliothek geladen wird.
 
 ```{julia}
 #| output: false
 using CairoMakie
 using DifferentialEquations
 ```
-
-wird.
 
 ## Einführung
 

@@ -13,7 +13,7 @@ for lang ∈ ARGS
         if o != "index.qmd" && endswith(o, ".qmd")
             p = replace(o, ".qmd" => ".ipynb")
             run(`quarto convert $input_dir/$o --output $output_dir/zip/$p`)
-        elseif endswith(o, ext)
+        elseif endswith(o, ext) || o == "Project.toml" || o == "skript.code-workspace"
             cp("$input_dir/$o", "$output_dir/zip/$o")
         end
     end

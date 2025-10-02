@@ -518,21 +518,13 @@ volume(b) = b.length * b.width * b.height
 println("Volumen V = ", volume(q))
 ```
 
-Eine Alternative besteht darin, das Paket `DotMaps` zu verwenden, mit dem wir die Werte schrittweise hinzufügen können. Das Paket muss einmal installiert werden
-
-```{julia}
-#| echo: false
-using Pkg
-Pkg.add("DotMaps")
-```
-
-und lässt sich danach laden:
+Eine Alternative besteht darin, das Paket `DotMaps` zu verwenden, mit dem wir die Werte schrittweise hinzufügen können. 
 
 ```{julia}
 using DotMaps
 ```
 
-Anschließend können wir eine Variable vom Typ `DotMap` erzeugen und danach belegen.
+Hier wird eine Variable vom Typ `DotMap` erzeugt und danach mit Werten belegt.
 
 ```{julia}
 q = DotMap()

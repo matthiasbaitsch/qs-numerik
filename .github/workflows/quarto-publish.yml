@@ -24,6 +24,14 @@ jobs:
         uses: julia-actions/setup-julia@v1
         with:
           version: '1.11'
+      - name: Install Julia packages
+        shell: julia --color=yes {0}
+        run: |
+          using Pkg
+          Pkg.add(["IJulia"])
+          Pkg.activate(".")
+          Pkg.instantiate()
+          Pkg.precompile()          
       - name: Set up Python
         uses: actions/setup-python@v5
         with: 

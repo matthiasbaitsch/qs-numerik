@@ -405,11 +405,11 @@ Die Laufvariable einer `for`-Schleife kann entweder direkt über die Einträge l
 x = [1, 2, 3, 4]
 A = [5 4 3 2; 1 9 3 2]
 
-for v in x
+for v = x
     print(v, " ")
 end
 println()
-for v in A
+for v = A
     print(v, " ")
 end
 println()

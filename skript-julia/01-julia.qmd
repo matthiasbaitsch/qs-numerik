@@ -238,7 +238,7 @@ println
 Bei einer ***`for` - Schleife*** steht von vorneherein fest, wie oft sie durchlaufen wird.
 
 ```{julia}
-for o in [42, π, "Hallo!", 1 / 3]
+for o = [42, π, "Hallo!", 1 / 3]
     println("Element " , o)
 end
 ```
@@ -246,25 +246,15 @@ end
 Das funktioniert auch mit Ranges:
 
 ```{julia}
-for i in 1:5
+for i = 1:5
     println(i^3)
 end
 ```
 
-Eine `for`-Schleife kann man statt mit `in` auch mit dem mathematischen Symbol $\in$ schreiben
-
-```{julia}
-for i ∈ 1:5
-    print(i^3, " ")
-end
-```
-
-was sehr schön zum Ausdruck bringt, dass `i` nacheinander den Wert aller ganzen Zahlen von 1 bis 5 annimmt.
-
 Manchmal ist es wichtig zu wissen, an welcher Position ein Element der Liste steht. In diesem Fall verwendet man eine Zählvariable (in der Regel `i`, `j` oder `k`) in Kombination mit dem `:` - Operator und häufig auch `length`.
 
 ```{julia}
-for i in 1:length(l)
+for i = 1:length(l)
     println("i = ", i, ", l[i] = ", l[i])
 end
 ```
@@ -272,8 +262,8 @@ end
 Geschachtelte Schleifen wie
 
 ```{julia}
-for i in 1:3
-    for j in 5:6
+for i = 1:3
+    for j = 5:6
         print(i, '-', j, ' ')
     end
 end
@@ -282,7 +272,7 @@ end
 lassen sich in Julia auch kompakt schreiben als
 
 ```{julia}
-for i in 1:3, j in 5:6
+for i = 1:3, j = 5:6
     print(i, '-', j, ' ')
 end
 ```
@@ -290,7 +280,7 @@ end
 Die Schreibweise mit `in` lässt sich auf alle Objekte anwenden, über die iteriert werden kann, also auch Zeichenketten:
 
 ```{julia}
-for c in "Hallo Welt"
+for c = "Hallo Welt"
     print(c, " ")
 end
 ```
@@ -380,10 +370,10 @@ println("Primfaktoren von 126: ", primefactors(126))
 
 # Test der Funktion isprime
 passed = true
-for n in 1:10000
+for n = 1:10000
     product = 1
     factors = primefactors(n)
-    for f in factors
+    for f = factors
         product *= f
         if !isprime(f)
             println("n = ", n, ": Faktor", f, " ist nicht prim")

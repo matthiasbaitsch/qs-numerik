@@ -6,5 +6,11 @@
 	],
 	"settings": {
 		"chat.disableAIFeatures": true
+	},
+	"extensions": {
+		"recommendations": [
+			"ms-python.python",
+			"ms-toolsai.jupyter"
+		]
 	}
 }

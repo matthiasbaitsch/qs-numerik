@@ -6,5 +6,11 @@
 	],
 	"settings": {
 		"chat.disableAIFeatures": true
+	},
+	"extensions": {
+		"recommendations": [
+			"julialang.language-julia",
+			"ms-toolsai.jupyter"
+		]
 	}
 }

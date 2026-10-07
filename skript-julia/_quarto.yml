@@ -10,12 +10,13 @@ book:
   author: "Matthias Baitsch"
   chapters:
     - index.qmd
-    - installation.qmd
     - 00-jupyter.qmd
     - 01-julia.qmd
     - 02-vektoren-und-matrizen.qmd
     - 03-plotten.qmd
     - 04-anfangswertprobleme.qmd
+  appendices:
+    - installation.qmd
   downloads: 
     - pdf
 

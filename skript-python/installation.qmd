@@ -4,16 +4,14 @@ engine: markdown
 ---
 
 
-Zu diesem Skript gibt es ein Projekt zum Herunterladen, das alle Kapitel sowie das Aufgabenblatt als Jupyter Notebooks enthält:
-
-<https://matthiasbaitsch.github.io/qs-numerik/python/python-und-jupyter-notebooks.zip>
-
+Zu diesem Skript gibt es ein Projekt zum Herunterladen, das alle Kapitel sowie das Aufgabenblatt als Jupyter Notebooks enthält.
 Wir arbeiten mit den Notebooks in [VS Code](https://code.visualstudio.com). Die folgenden Schritte sind nur einmal nötig.
 
 
 ## VS Code installieren
 
 [VS Code](https://code.visualstudio.com) herunterladen und installieren.
+Anschließend in VS Code über *View → Extensions* die Erweiterungen *Python* und *Jupyter* suchen und installieren.
 
 
 ## uv installieren
@@ -46,16 +44,16 @@ winget install --id=astral-sh.uv -e
 
 ## Projekt entpacken und öffnen
 
-1. ZIP-Datei herunterladen und an einem Ort Ihrer Wahl entpacken.
+1. [ZIP-Datei](https://matthiasbaitsch.github.io/qs-numerik/python/python-und-jupyter-notebooks.zip) herunterladen und an einem Ort Ihrer Wahl entpacken.
    Es entsteht der Ordner `python-und-jupyter-notebooks`.
-2. In VS Code *Datei → Arbeitsbereich aus Datei öffnen…* wählen und die Datei `python-und-jupyter-notebooks.code-workspace` öffnen.
-   VS Code schlägt dann vor, die Erweiterungen *Python* und *Jupyter* zu installieren. Bestätigen Sie das.
+2. Die Datei `python-und-jupyter-notebooks.code-workspace` im Ordner per Doppelklick öffnen. Dadurch startet VS Code mit dem Projekt.
+   Falls das nicht klappt, in VS Code *File → Open Workspace from File…* wählen und die Datei dort öffnen.
 
 
 ## Pakete installieren
 
 Die benötigten Pakete (NumPy, SciPy, Matplotlib, …) sind in der Datei `pyproject.toml` aufgeführt.
-Zum Installieren über *Terminal → Neues Terminal* ein Terminal öffnen und eingeben
+Zum Installieren über *Terminal → New Terminal* ein Terminal öffnen und eingeben
 
 ```sh
 uv sync
@@ -67,17 +65,5 @@ Falls der Befehl `uv` nicht gefunden wird, VS Code einmal komplett beenden und n
 
 ## Notebooks verwenden
 
-Ein Notebook öffnen, oben rechts auf *Kernel auswählen* bzw. *Select Kernel* klicken und
-*Python-Umgebungen → .venv* wählen.
-
-
-## Weitere Pakete
-
-Weitere Pakete werden im Terminal von VS Code mit `uv add` installiert, zum Beispiel
-
-```sh
-uv add sympy
-```
-
-Das Paket wird in `pyproject.toml` eingetragen und steht danach in den Notebooks zur Verfügung
-(eventuell muss der Kernel neu gestartet werden).
+Ein Notebook öffnen, oben rechts auf *Select Kernel* klicken und
+*Python Environments… → .venv* wählen.

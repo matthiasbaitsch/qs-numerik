@@ -357,7 +357,7 @@ f(2, 3)
 
 Sollen Funktionen in mehreren Jupyter Notebooks verwendet werden, dann kann man sie in eine eigene Julia-Datei auslagern. Zum Beispiel enthält die (im selben 
 Ordner wie die Jupyter Notebooks) liegende Datei
-`number_functions.jl` (Zip-Datei von Moodle herunterladen) Funktionen aus dem Bereich der Zahlentheorie. Um diese zu verwenden müssen sie zunächst importiert werden.
+`numberfunctions.jl` (im Projekt zum Herunterladen enthalten) Funktionen aus dem Bereich der Zahlentheorie. Um diese zu verwenden müssen sie zunächst importiert werden.
 
 ```{julia}
 include("numberfunctions.jl")
@@ -504,23 +504,6 @@ Eine benanntes Tupel kann als Parameter an eine Funktion übergeben werden:
 
 ```{julia}
 volume(b) = b.length * b.width * b.height
-
-println("Volumen V = ", volume(q))
-```
-
-Eine Alternative besteht darin, das Paket `DotMaps` zu verwenden, mit dem wir die Werte schrittweise hinzufügen können. 
-
-```{julia}
-using DotMaps
-```
-
-Hier wird eine Variable vom Typ `DotMap` erzeugt und danach mit Werten belegt.
-
-```{julia}
-q = DotMap()
-q.length = 3
-q.width = 2.2
-q.height = 5.5
 
 println("Volumen V = ", volume(q))
 ```

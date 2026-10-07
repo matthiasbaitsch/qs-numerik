@@ -10,6 +10,8 @@ def is_prime(n):
     Returns:
         True if `n` is prime number, False otherwise
     """
+    if n < 2:
+        return False
     for i in range(2, n):
         if n % i == 0:
             return False
@@ -36,6 +38,7 @@ def prime_factors(n):
             n //= t
         else:
             t += 1
-    factors.append(n)
+    if n > 1:
+        factors.append(n)
 
     return factors

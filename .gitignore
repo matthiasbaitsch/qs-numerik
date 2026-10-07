@@ -7,3 +7,6 @@ aufgaben/loesung-martin
 .jupyter
 *checkpoint*
 skript-julia/Manifest.toml
+.DS_Store
+.venv
+videos

@@ -1,1 +1,5 @@
 /.quarto/
+.venv/
+
+**/*.quarto_ipynb
+uv.lock

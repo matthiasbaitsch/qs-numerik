@@ -10,6 +10,7 @@ book:
   author: "Matthias Baitsch"
   chapters:
     - index.qmd
+    - installation.qmd
     - 00-jupyter.qmd
     - 01-julia.qmd
     - 02-vektoren-und-matrizen.qmd
@@ -24,6 +25,6 @@ format:
   pdf:
     documentclass: scrreprt
 
-jupyter: julia-1.11
+engine: julia
 
 

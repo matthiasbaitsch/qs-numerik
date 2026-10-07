@@ -3,11 +3,10 @@ title: Plots erstellen
 ---
 
 
-Mit dem [Makie-Paket](https://docs.makie.org/stable) lassen sich eine Vielzahl verschiedener Plots erstellen, [hier](https://beautiful.makie.org/dev/) eine Sammlung von Beispielen. Hier werden die Bibliotheken geladen.
+Mit dem [Makie-Paket](https://docs.makie.org/stable) lassen sich eine Vielzahl verschiedener Plots erstellen, [hier](https://beautiful.makie.org/dev/) eine Sammlung von Beispielen. Hier wird die Bibliothek geladen.
 
 ```{julia}
 using CairoMakie
-using Makie.GeometryBasics
 ```
 
 ## Linienplots
@@ -128,7 +127,7 @@ Hier sehen Sie eine Variante für die Kombination von Plots in der zuerst die Gr
 
 ## Kreise und Rechtecke
 
-Kreise und Rechtecke lassen sich mit der `poly`-Funktion darstellen (hierfür muss das Modul `Makie.GeometryBasics` geladen werden). 
+Kreise und Rechtecke lassen sich mit der `poly`-Funktion darstellen. 
 
 ```{julia}
 p = poly(Rect(0, 0, 2, 2), color=(:hotpink, 0.5), strokewidth=2)

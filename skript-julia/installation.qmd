@@ -1,0 +1,91 @@
+---
+title: Installation
+engine: markdown
+---
+
+
+Zu diesem Skript gibt es ein Projekt zum Herunterladen, das alle Kapitel sowie das Aufgabenblatt als Jupyter Notebooks enthält:
+
+<https://matthiasbaitsch.github.io/qs-numerik/julia/julia-und-jupyter-notebooks.zip>
+
+Wir arbeiten mit den Notebooks in [VS Code](https://code.visualstudio.com). Die folgenden Schritte sind nur einmal nötig.
+
+
+## VS Code installieren
+
+[VS Code](https://code.visualstudio.com) herunterladen und installieren.
+
+
+## Julia installieren
+
+Julia wird mit dem offiziellen Installationsprogramm [juliaup](https://julialang.org/install/) installiert.
+
+::: {.panel-tabset}
+
+## macOS und Linux
+
+Im Terminal eingeben
+
+```sh
+curl -fsSL https://install.julialang.org | sh
+```
+
+## Windows
+
+In der PowerShell eingeben
+
+```powershell
+winget install --name Julia --id 9NJNWW8PVKMN -e -s msstore
+```
+
+:::
+
+
+## Projekt entpacken und öffnen
+
+1. ZIP-Datei herunterladen und an einem Ort Ihrer Wahl entpacken.
+   Es entsteht der Ordner `julia-und-jupyter-notebooks`.
+2. In VS Code *Datei → Arbeitsbereich aus Datei öffnen…* wählen und die Datei `julia-und-jupyter-notebooks.code-workspace` öffnen.
+   VS Code schlägt dann vor, die Erweiterungen *Julia* und *Jupyter* zu installieren. Bestätigen Sie das.
+
+
+## Pakete installieren
+
+Die benötigten Pakete (CairoMakie, OrdinaryDiffEq, …) sind in der Datei `Project.toml` aufgeführt.
+Zum Installieren über *Terminal → Neues Terminal* ein Terminal öffnen und eingeben
+
+```sh
+julia instantiate.jl
+```
+
+Das lädt alle Pakete herunter und kompiliert sie vor.
+
+::: {.callout-note}
+Das dauert beim ersten Mal 10 Minuten oder länger, danach geht es schnell.
+:::
+
+Falls der Befehl `julia` nicht gefunden wird, VS Code einmal komplett beenden und neu starten.
+
+
+## Notebooks verwenden
+
+Ein Notebook öffnen, oben rechts auf *Kernel auswählen* bzw. *Select Kernel* klicken und einen Kernel *Julia …* wählen.
+
+
+## Weitere Pakete
+
+Weitere Pakete werden im Terminal von VS Code installiert.
+Dazu Julia mit
+
+```sh
+julia --project=.
+```
+
+starten, mit `]` in den Paketmodus wechseln und das Paket hinzufügen, zum Beispiel
+
+```
+add Polynomials
+```
+
+Das Paket wird in `Project.toml` eingetragen und steht danach in den Notebooks zur Verfügung
+(eventuell muss der Kernel neu gestartet werden).

@@ -7,11 +7,10 @@ jupyter: python3
 Mit dem Python-Paket [matplotlib](https://matplotlib.org) lassen sich eine Vielzahl verschiedener Plots erstellen, 
 [hier](https://matplotlib.org/stable/tutorials/introductory/sample_plots.html#sphx-glr-tutorials-introductory-sample-plots-py) eine Sammlung von Beispielen. 
 
-Wie immer muss die Bibliothek importiert werden. Für uns interessant ist das Paket `matplotlib.pyplot`, als Kürzel hat sich dafür `plt` eingebürgert. Besonders gut funktioniert matplotlib zusammen mit den Paketen NumPy und math, die wir gleich mit importieren.
+Wie immer muss die Bibliothek importiert werden. Für uns interessant ist das Paket `matplotlib.pyplot`, als Kürzel hat sich dafür `plt` eingebürgert. Besonders gut funktioniert matplotlib zusammen mit dem Paket NumPy, das wir gleich mit importieren.
 
 
 ```{python}
-from math import *
 import numpy as np
 import matplotlib.pyplot as plt
 ```
@@ -31,7 +30,7 @@ Plot für das Auge wie eine glatte Kurve darstellt. Die textuelle Ausgabe des Pl
 wir mit einem Semikolon unterdrücken.
 
 ```{python}
-x = np.linspace(0, 2 * pi, 100)
+x = np.linspace(0, 2 * np.pi, 100)
 y = np.sin(x)
 plt.plot(x, y)
 plt.show()
@@ -41,7 +40,7 @@ plt.show()
 Hier die Sinusfunktion, die Kosinusfunktion und die Nullfunktion in einem Plot.
 
 ```{python}
-x = np.linspace(-pi, 6 * pi, 100)
+x = np.linspace(-np.pi, 6 * np.pi, 100)
 y1 = np.sin(x)
 y2 = np.cos(x)
 plt.plot(x, y1)
@@ -82,7 +81,7 @@ plt.show()
 Punkte lassen sich mit `scatter` darstellen:
 
 ```{python}
-x = np.linspace(0, 2*pi, 20)
+x = np.linspace(0, 2*np.pi, 20)
 y = np.sin(x)
 plt.scatter(x, y)
 plt.show()
@@ -111,7 +110,7 @@ def make_fn(n):
 erzeugen wir die einzelnen Funktionen, die sich dann in einer Schleife plotten lassen.
 
 ```{python}
-x = np.linspace(0, 2*pi, 500)
+x = np.linspace(0, 2*np.pi, 500)
 l = []
 for i in range(0, 6):
     l.append(f"n = {i}")

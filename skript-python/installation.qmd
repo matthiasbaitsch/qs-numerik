@@ -1,0 +1,83 @@
+---
+title: Installation
+engine: markdown
+---
+
+
+Zu diesem Skript gibt es ein Projekt zum Herunterladen, das alle Kapitel sowie das Aufgabenblatt als Jupyter Notebooks enthält:
+
+<https://matthiasbaitsch.github.io/qs-numerik/python/python-und-jupyter-notebooks.zip>
+
+Wir arbeiten mit den Notebooks in [VS Code](https://code.visualstudio.com). Die folgenden Schritte sind nur einmal nötig.
+
+
+## VS Code installieren
+
+[VS Code](https://code.visualstudio.com) herunterladen und installieren.
+
+
+## uv installieren
+
+Python und die benötigten Pakete werden mit dem Werkzeug [uv](https://docs.astral.sh/uv/) installiert.
+Ein bereits installiertes Python wird nicht benötigt und auch nicht verändert.
+
+::: {.panel-tabset}
+
+## macOS und Linux
+
+Im Terminal eingeben
+
+```sh
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+(oder mit Homebrew: `brew install uv`)
+
+## Windows
+
+In der PowerShell eingeben
+
+```powershell
+winget install --id=astral-sh.uv -e
+```
+
+:::
+
+
+## Projekt entpacken und öffnen
+
+1. ZIP-Datei herunterladen und an einem Ort Ihrer Wahl entpacken.
+   Es entsteht der Ordner `python-und-jupyter-notebooks`.
+2. In VS Code *Datei → Arbeitsbereich aus Datei öffnen…* wählen und die Datei `python-und-jupyter-notebooks.code-workspace` öffnen.
+   VS Code schlägt dann vor, die Erweiterungen *Python* und *Jupyter* zu installieren. Bestätigen Sie das.
+
+
+## Pakete installieren
+
+Die benötigten Pakete (NumPy, SciPy, Matplotlib, …) sind in der Datei `pyproject.toml` aufgeführt.
+Zum Installieren über *Terminal → Neues Terminal* ein Terminal öffnen und eingeben
+
+```sh
+uv sync
+```
+
+Beim ersten Mal lädt uv Python und alle Pakete herunter, das dauert etwa eine Minute.
+Falls der Befehl `uv` nicht gefunden wird, VS Code einmal komplett beenden und neu starten.
+
+
+## Notebooks verwenden
+
+Ein Notebook öffnen, oben rechts auf *Kernel auswählen* bzw. *Select Kernel* klicken und
+*Python-Umgebungen → .venv* wählen.
+
+
+## Weitere Pakete
+
+Weitere Pakete werden im Terminal von VS Code mit `uv add` installiert, zum Beispiel
+
+```sh
+uv add sympy
+```
+
+Das Paket wird in `pyproject.toml` eingetragen und steht danach in den Notebooks zur Verfügung
+(eventuell muss der Kernel neu gestartet werden).

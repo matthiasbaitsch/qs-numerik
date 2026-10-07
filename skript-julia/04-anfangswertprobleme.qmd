@@ -2,12 +2,12 @@
 title: Numerische Lösung von Anfangswertproblemen
 ---
 
-Anfangswertprobleme lassen sich in Julia mithilfe des `DifferentialEquations` Pakets lösen, das hier zusammen mit der Plotbibliothek geladen wird.
+Anfangswertprobleme lassen sich in Julia mithilfe des Pakets `OrdinaryDiffEq` aus dem [DifferentialEquations](https://docs.sciml.ai/DiffEqDocs/stable/)-Ökosystem lösen, das hier zusammen mit der Plotbibliothek geladen wird.
 
 ```{julia}
 #| output: false
 using CairoMakie
-using DifferentialEquations
+using OrdinaryDiffEq
 ```
 
 ## Einführung
@@ -119,9 +119,9 @@ axislegend()
 p
 ```
 
-### Näherungsverfahren in DifferentialEquations
+### Näherungsverfahren in OrdinaryDiffEq
 
-In `DifferentialEquations` (oben importiert) gibt es eine einheitliche Schnittstelle zu verschiedenen numerischen Verfahren darstellt. Standardmäßig wird ein adaptives Verfahren mit automatischer Schrittweitensteuerung verwendet. 
+In `OrdinaryDiffEq` (oben importiert) gibt es eine einheitliche Schnittstelle zu verschiedenen numerischen Verfahren darstellt. Standardmäßig wird ein adaptives Verfahren mit automatischer Schrittweitensteuerung verwendet. 
 
 ```{julia}
 F(y, p, x) = 2 * x * y;
@@ -225,7 +225,7 @@ print("N = ", length(s))
 scatterlines(s.t, s[1, :])
 ```
 
-Das Standardverfahren funktioniert hier sehr gut, das spricht für die Umsetzung im Paket `DifferentialEquations`. In Python und Matlab ist das leider nicht der Fall, die Funktion `solve_ivp` aus dem Python scipy Paket berechnet für diese Problem mehr als 1.5 Millionen Schritte, in Matlab sind es sogar mehr als 6 Millionen. 
+Das Standardverfahren funktioniert hier sehr gut, das spricht für die Umsetzung im Paket `OrdinaryDiffEq`. In Python und Matlab ist das leider nicht der Fall, die Funktion `solve_ivp` aus dem Python scipy Paket berechnet für diese Problem mehr als 1.5 Millionen Schritte, in Matlab sind es sogar mehr als 6 Millionen. 
 
 Anmerkungen:
 
@@ -286,7 +286,7 @@ M = [3000 0; 0 3000];
 K = [1 -1; -1 1];
 ```
 
-Mit `DifferentialEquations` kann man diese spezielle Form einer Differentialgleichung mithilfe von `ODEFunction` definieren, wenn die Massenmatrix mit angegeben wird. Man hätte natürlich auch die DGL mit der Inversen der Massenmatrix durchmultiplizieren können.
+Mit `OrdinaryDiffEq` kann man diese spezielle Form einer Differentialgleichung mithilfe von `ODEFunction` definieren, wenn die Massenmatrix mit angegeben wird. Man hätte natürlich auch die DGL mit der Inversen der Massenmatrix durchmultiplizieren können.
 
 ```{julia}
 F(y, p, t) = -K * y

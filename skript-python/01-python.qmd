@@ -31,7 +31,7 @@ Um die gängigen mathematischen Funktionen wie `sqrt`, `pow`, `sin`, `cos`, ... 
 Dann stehen auch die mathematischen Konstanten $\pi$ und $e$ zur Verfügung.
 
 ```{python}
-from math import *
+from math import sqrt, pi, e
 
 print(sqrt(4))
 print(pi)
@@ -280,11 +280,11 @@ eingerückt die Anweisungen im Rumpf der Funktion. Das berechnete Ergebnis wird 
 
 Sollen Funktionen in mehreren Jupyter Notebooks verwendet werden, dann kann man sie in eine eigene Python-Datei auslagern. Zum Beispiel enthält die (im selben 
 Ordner wie die Jupyter Notebooks) liegende Datei
-`numberfunctions.py` (Zip-Datei von Moodle herunterladen) Funktionen aus dem Bereich der Zahlentheorie. Um diese zu verwenden müssen sie zunächst importiert werden.
+`numberfunctions.py` (im Projekt zum Herunterladen enthalten) Funktionen aus dem Bereich der Zahlentheorie. Um diese zu verwenden müssen sie zunächst importiert werden.
 
 ```{python}
 # Importieren
-from numberfunctions import *
+from numberfunctions import is_prime, prime_factors
 
 # Funktionen verwenden
 print("2 ist prim: ", is_prime(2))
@@ -370,13 +370,13 @@ print("f5(2) =", f5(2))
 
 ### Mehrfachvariablen
 
-Es gibt Situationen, in denen verschiedene Werte zusammengehören, wie das zum Beispiel bei einem Quader mit Länge, Breite und Höhe der Fall ist. Hier bietet es sich an, die Werte in einem einzelnen Objekt zusammenzufassen, wie das mit dem `objdict`-Paket und der Klasse `ObjDict` möglich ist. Hier ein Beispiel. 
+Es gibt Situationen, in denen verschiedene Werte zusammengehören, wie das zum Beispiel bei einem Quader mit Länge, Breite und Höhe der Fall ist. Hier bietet es sich an, die Werte in einem einzelnen Objekt zusammenzufassen, wie das mit der Klasse `SimpleNamespace` aus der Standardbibliothek möglich ist. Hier ein Beispiel. 
 
 ```{python}
-from objdict import ObjDict
+from types import SimpleNamespace
 
 # Define struct
-q = ObjDict()
+q = SimpleNamespace()
 q.length = 3
 q.width = 2
 q.height = 5

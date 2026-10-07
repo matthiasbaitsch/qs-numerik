@@ -10,6 +10,7 @@ book:
   author: "Matthias Baitsch"
   chapters:
     - index.qmd
+    - installation.qmd
     - 00-jupyter.qmd
     - 01-python.qmd
     - 02-vektoren-und-matrizen.qmd

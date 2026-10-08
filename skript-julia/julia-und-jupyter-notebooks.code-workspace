@@ -5,7 +5,10 @@
 		}
 	],
 	"settings": {
-		"chat.disableAIFeatures": true
+		"chat.disableAIFeatures": true,
+		"notebook.lineNumbers": "on",
+		"notebook.formatOnSave.enabled": true,
+		"editor.formatOnSave": true
 	},
 	"extensions": {
 		"recommendations": [

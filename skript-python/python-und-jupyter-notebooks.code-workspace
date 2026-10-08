@@ -5,12 +5,19 @@
 		}
 	],
 	"settings": {
-		"chat.disableAIFeatures": true
+		"chat.disableAIFeatures": true,
+		"notebook.lineNumbers": "on",
+		"notebook.formatOnSave.enabled": true,
+		"editor.formatOnSave": true,
+		"[python]": {
+			"editor.defaultFormatter": "charliermarsh.ruff"
+		}
 	},
 	"extensions": {
 		"recommendations": [
 			"ms-python.python",
-			"ms-toolsai.jupyter"
+			"ms-toolsai.jupyter",
+			"charliermarsh.ruff"
 		]
 	}
 }
